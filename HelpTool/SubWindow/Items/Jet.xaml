@@ -1,0 +1,103 @@
+﻿<Window x:Class="HelpTool.SubWindow.Items.Jet"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:translator="clr-namespace:HelpTool.Languages"
+        xmlns:local="clr-namespace:HelpTool.SubWindow.Items"
+        mc:Ignorable="d"
+        Title="{translator:Loc StatsCreator}" Height="460" Width="400" Style="{StaticResource JetWindow}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Content="{translator:Loc Effect}" Grid.Row="0"/>
+            <ComboBox x:Name="AddRem" Grid.Row="1" Style="{StaticResource JetComboBox1}">
+                <ComboBoxItem Content="+"/>
+                <ComboBoxItem Content="-"/>
+            </ComboBox>
+            <ComboBox x:Name="EffectComboBox" Grid.Row="1" SelectionChanged="EffectComboBox_SelectionChanged" Style="{StaticResource JetComboBox2}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="{Binding Path=Name}" Grid.Column="1"/>
+                            <Image Source="{Binding Path=IconPath}" Grid.Column="0"/>
+                        </Grid>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Content="{translator:Loc JetMin}" Grid.Row="0"/>
+            <TextBox x:Name="JetMinTextBox" Grid.Row="1"/>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Content="{translator:Loc JetMax}" Grid.Row="0"/>
+            <TextBox x:Name="JetMaxTextBox" Grid.Row="1"/>
+        </Grid>
+        <Button Grid.Row="3" x:Name="AddButton" Content="{translator:Loc Add}" Style="{StaticResource HomeButton}" Click="AddButton_Click"/>
+        <ListBox x:Name="JetsListBox" ItemsSource="{Binding Effects, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Style="{StaticResource JetListBox}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="{Binding Path=Text}" Grid.Column="0"/>
+                        <Image Source="{Binding Path=Effect.IconPath}" Grid.Column="1"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{translator:Loc Up}" Click="Up_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/up.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="{translator:Loc Down}" Click="Down_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/down.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="{translator:Loc Delete}" Click="Delete_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/delete.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="{translator:Loc DeleteAll}" Click="DeleteAll_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/delete.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </ListBox.ContextMenu>
+        </ListBox>
+        <Button Grid.Row="5" x:Name="GenerateButton" Content="{translator:Loc Generate}" Style="{StaticResource HomeButton}" Click="GenerateButton_Click"/>
+        <TextBox Grid.Row="6" x:Name="GeneratedJetText"/>
+    </Grid>
+</Window>

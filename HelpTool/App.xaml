@@ -1,0 +1,88 @@
+﻿<Application x:Class="HelpTool.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:HelpTool"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary x:Name="AppStyles">
+            <Style x:Key="GeneralWindow" TargetType="Window">
+                <Setter Property="FontFamily" Value="Open Sans"/>
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="Icon" Value="/Resources/ocre.ico"/>
+                <Setter Property="ResizeMode" Value="NoResize"/>
+            </Style>
+            <!-- Home -->
+            <Style x:Key="HomeButton" TargetType="Button">
+                <Setter Property="Background" Value="White"/>
+            </Style>
+            <Style x:Key="HomeImage" TargetType="Image">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="Width" Value="64"/>
+                <Setter Property="Height" Value="64"/>
+            </Style>
+            <Style x:Key="HomeTextBlock" TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="FontFamily" Value="Open Sans"/>
+                <Setter Property="FontSize" Value="30"/>
+            </Style>
+            
+            <!-- Configuration -->
+            <Style x:Key="ConfigLabel" TargetType="Label">
+                <Setter Property="FontFamily" Value="Open Sans"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Stretch"/>
+            </Style>
+            <Style x:Key="ConfigTextBox" TargetType="TextBox">
+                <Setter Property="Grid.Row" Value="1"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+            <Style x:Key="ConfigPasswordBox" TargetType="PasswordBox">
+                <Setter Property="Grid.Row" Value="1"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+            
+            <!-- Jet -->
+            <Style x:Key="JetWindow" TargetType="Window">
+                <Setter Property="FontFamily" Value="Open Sans"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Icon" Value="/Resources/ocre.ico"/>
+                <Setter Property="ResizeMode" Value="NoResize"/>
+            </Style>
+            <Style x:Key="JetComboBox1" TargetType="ComboBox">
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="Width" Value="40"/>
+                <Setter Property="Visibility" Value="Hidden"/>
+                <Setter Property="SelectedIndex" Value="0"/>
+            </Style>
+            <Style x:Key="JetComboBox2" TargetType="ComboBox">
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="Width" Value="360"/>
+                <Setter Property="SelectedIndex" Value="0"/>
+            </Style>
+            <Style x:Key="JetListBox" TargetType="ListBox">
+                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            </Style>
+            
+            <!-- ItemCreator -->
+            <Style x:Key="ItemWindow" TargetType="Window">
+                <Setter Property="FontFamily" Value="Open Sans"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Icon" Value="/Resources/ocre.ico"/>
+                <Setter Property="ResizeMode" Value="NoResize"/>
+            </Style>
+            <Style x:Key="ItemLabel" TargetType="Label">
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Stretch"/>
+            </Style>
+            <Style x:Key="ItemTextBox" TargetType="TextBox">
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="VerticalAlignment" Value="Stretch"/>
+                <Setter Property="Height" Value="25"/>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

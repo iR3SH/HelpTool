@@ -1,0 +1,150 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\ocre.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\delete.png" />
+    <None Remove="Resources\donjons.jpg" />
+    <None Remove="Resources\down.png" />
+    <None Remove="Resources\Icons\agi.png" />
+    <None Remove="Resources\Icons\case.png" />
+    <None Remove="Resources\Icons\cercle.png" />
+    <None Remove="Resources\Icons\crit.png" />
+    <None Remove="Resources\Icons\croix.png" />
+    <None Remove="Resources\Icons\DoAir.png" />
+    <None Remove="Resources\Icons\DoEau.png" />
+    <None Remove="Resources\Icons\DoFeu.png" />
+    <None Remove="Resources\Icons\DoNeutre.png" />
+    <None Remove="Resources\Icons\DoPer.png" />
+    <None Remove="Resources\Icons\DoTerre.png" />
+    <None Remove="Resources\Icons\eau.png" />
+    <None Remove="Resources\Icons\EsqPa.png" />
+    <None Remove="Resources\Icons\EsqPm.png" />
+    <None Remove="Resources\Icons\force.png" />
+    <None Remove="Resources\Icons\ini.png" />
+    <None Remove="Resources\Icons\intel.png" />
+    <None Remove="Resources\Icons\invoc.png" />
+    <None Remove="Resources\Icons\ligne.png" />
+    <None Remove="Resources\Icons\ligneHori.png" />
+    <None Remove="Resources\Icons\neutre.png" />
+    <None Remove="Resources\Icons\pa.png" />
+    <None Remove="Resources\Icons\pm.png" />
+    <None Remove="Resources\Icons\po.png" />
+    <None Remove="Resources\Icons\Pods.png" />
+    <None Remove="Resources\Icons\pp.png" />
+    <None Remove="Resources\Icons\ReAir.png" />
+    <None Remove="Resources\Icons\ReEau.png" />
+    <None Remove="Resources\Icons\ReFeu.png" />
+    <None Remove="Resources\Icons\ReNeutre.png" />
+    <None Remove="Resources\Icons\ReTerre.png" />
+    <None Remove="Resources\Icons\sagesse.png" />
+    <None Remove="Resources\Icons\soin.png" />
+    <None Remove="Resources\Icons\sort.png" />
+    <None Remove="Resources\Icons\vita.png" />
+    <None Remove="Resources\Icons\XP.png" />
+    <None Remove="Resources\item.png" />
+    <None Remove="Resources\monster.png" />
+    <None Remove="Resources\ocre.ico" />
+    <None Remove="Resources\ocre.png" />
+    <None Remove="Resources\settings.png" />
+    <None Remove="Resources\spell.png" />
+    <None Remove="Resources\up.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\ocre.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\delete.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HelpData\HelpData.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\donjons.jpg" />
+    <Resource Include="Resources\down.png" />
+    <Resource Include="Resources\Icons\agi.png" />
+    <Resource Include="Resources\Icons\case.png" />
+    <Resource Include="Resources\Icons\cercle.png" />
+    <Resource Include="Resources\Icons\crit.png" />
+    <Resource Include="Resources\Icons\croix.png" />
+    <Resource Include="Resources\Icons\DoAir.png" />
+    <Resource Include="Resources\Icons\DoEau.png" />
+    <Resource Include="Resources\Icons\DoFeu.png" />
+    <Resource Include="Resources\Icons\DoNeutre.png" />
+    <Resource Include="Resources\Icons\DoPer.png" />
+    <Resource Include="Resources\Icons\DoTerre.png" />
+    <Resource Include="Resources\Icons\eau.png" />
+    <Resource Include="Resources\Icons\EsqPa.png" />
+    <Resource Include="Resources\Icons\EsqPm.png" />
+    <Resource Include="Resources\Icons\force.png" />
+    <Resource Include="Resources\Icons\ini.png" />
+    <Resource Include="Resources\Icons\intel.png" />
+    <Resource Include="Resources\Icons\invoc.png" />
+    <Resource Include="Resources\Icons\ligne.png" />
+    <Resource Include="Resources\Icons\ligneHori.png" />
+    <Resource Include="Resources\Icons\neutre.png" />
+    <Resource Include="Resources\Icons\pa.png" />
+    <Resource Include="Resources\Icons\pm.png" />
+    <Resource Include="Resources\Icons\po.png" />
+    <Resource Include="Resources\Icons\Pods.png" />
+    <Resource Include="Resources\Icons\pp.png" />
+    <Resource Include="Resources\Icons\ReAir.png" />
+    <Resource Include="Resources\Icons\ReEau.png" />
+    <Resource Include="Resources\Icons\ReFeu.png" />
+    <Resource Include="Resources\Icons\ReNeutre.png" />
+    <Resource Include="Resources\Icons\ReTerre.png" />
+    <Resource Include="Resources\Icons\sagesse.png" />
+    <Resource Include="Resources\Icons\soin.png" />
+    <Resource Include="Resources\Icons\sort.png" />
+    <Resource Include="Resources\Icons\vita.png" />
+    <Resource Include="Resources\Icons\XP.png" />
+    <Resource Include="Resources\monster.png" />
+    <Resource Include="Resources\item.png" />
+    <Resource Include="Resources\ocre.ico" />
+    <Resource Include="Resources\ocre.png" />
+    <Resource Include="Resources\settings.png" />
+    <Resource Include="Resources\spell.png" />
+    <Resource Include="Resources\up.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Languages\App.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>App.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Languages\App.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>App.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

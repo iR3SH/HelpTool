@@ -1,0 +1,60 @@
+﻿<Window x:Class="HelpTool.SubWindow.Configuration"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:translator="clr-namespace:HelpTool.Languages"
+        xmlns:local="clr-namespace:HelpTool.SubWindow"
+        mc:Ignorable="d"
+        Title="{translator:Loc Configuration}" Height="300" Width="300" Style="{StaticResource GeneralWindow}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <Label Content="{translator:Loc DbHost}" Style="{StaticResource ConfigLabel}"/>
+            <TextBox x:Name="Host" Style="{StaticResource ConfigTextBox}"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Label Content="{translator:Loc DbName}" Style="{StaticResource ConfigLabel}"/>
+            <TextBox x:Name="DbName" Style="{StaticResource ConfigTextBox}"/>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Label Content="{translator:Loc DbUser}" Style="{StaticResource ConfigLabel}"/>
+            <TextBox x:Name="DbUser" Style="{StaticResource ConfigTextBox}"/>
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Label Content="{translator:Loc DbPassword}" Style="{StaticResource ConfigLabel}"/>
+            <PasswordBox x:Name="DbPassword" Style="{StaticResource ConfigPasswordBox}"/>
+        </Grid>
+
+        <Button x:Name="Save" Content="{translator:Loc Save}" Grid.Row="4" FontSize="14" Background="White" Click="Save_Click"/>
+
+    </Grid>
+</Window>

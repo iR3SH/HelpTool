@@ -1,0 +1,280 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Monsters" xml:space="preserve">
+    <value>Monsters</value>
+  </data>
+  <data name="Items" xml:space="preserve">
+    <value>Items</value>
+  </data>
+  <data name="Spells" xml:space="preserve">
+    <value>Spells</value>
+  </data>
+  <data name="Configuration" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="DbHost" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="DbName" xml:space="preserve">
+    <value>Database Name</value>
+  </data>
+  <data name="DbUser" xml:space="preserve">
+    <value>Database Username</value>
+  </data>
+  <data name="DbPassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Error_DbCredConnection" xml:space="preserve">
+    <value>The Creditentials for the Database was wrong</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Success_DbConnect" xml:space="preserve">
+    <value>Database Successfully connected !</value>
+  </data>
+  <data name="Effect" xml:space="preserve">
+    <value>Effect :</value>
+  </data>
+  <data name="JetMin" xml:space="preserve">
+    <value>Min Value :</value>
+  </data>
+  <data name="JetMax" xml:space="preserve">
+    <value>Max Value (0 if fix) :</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Generate" xml:space="preserve">
+    <value>Generate</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteAll" xml:space="preserve">
+    <value>Delete all effects</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Up</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Down</value>
+  </data>
+  <data name="NotConfigured" xml:space="preserve">
+    <value>You must first configured the connection to the Database</value>
+  </data>
+  <data name="StatsCreator" xml:space="preserve">
+    <value>StatsCreator</value>
+  </data>
+  <data name="French" xml:space="preserve">
+    <value>French</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="ItemType" xml:space="preserve">
+    <value>Item Type</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="ItemStats" xml:space="preserve">
+    <value>Item Stats</value>
+  </data>
+  <data name="GenerateStats" xml:space="preserve">
+    <value>Generate Stats</value>
+  </data>
+  <data name="Pods" xml:space="preserve">
+    <value>Pods</value>
+  </data>
+  <data name="ItemSetId" xml:space="preserve">
+    <value>Item Set Id (-1 if none ItemSet)</value>
+  </data>
+  <data name="CreateItem" xml:space="preserve">
+    <value>Create Item</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Terms" xml:space="preserve">
+    <value>Terms</value>
+  </data>
+  <data name="WeaponInfo" xml:space="preserve">
+    <value>Weapon Infos</value>
+  </data>
+  <data name="BuyPrice" xml:space="preserve">
+    <value>Points for Buy</value>
+  </data>
+  <data name="NewPrice" xml:space="preserve">
+    <value>NewPrice</value>
+  </data>
+  <data name="AvgPrice" xml:space="preserve">
+    <value>Average Price</value>
+  </data>
+  <data name="Sold" xml:space="preserve">
+    <value>Sold</value>
+  </data>
+  <data name="ItemCreateError" xml:space="preserve">
+    <value>An error occurred while creating the item</value>
+  </data>
+  <data name="NewGrade" xml:space="preserve">
+    <value>New Grade</value>
+  </data>
+  <data name="Neutral" xml:space="preserve">
+    <value>Neutral</value>
+  </data>
+  <data name="Angel" xml:space="preserve">
+    <value>Angel</value>
+  </data>
+  <data name="Demon" xml:space="preserve">
+    <value>Demon</value>
+  </data>
+  <data name="Damage" xml:space="preserve">
+    <value>Damages</value>
+  </data>
+  <data name="DamagePerc" xml:space="preserve">
+    <value>% Damages</value>
+  </data>
+  <data name="Vitality" xml:space="preserve">
+    <value>Vitality</value>
+  </data>
+  <data name="Sagesse" xml:space="preserve">
+    <value>Wisdom</value>
+  </data>
+  <data name="Force" xml:space="preserve">
+    <value>Strength</value>
+  </data>
+  <data name="Agility" xml:space="preserve">
+    <value>Agility</value>
+  </data>
+  <data name="Soins" xml:space="preserve">
+    <value>Heal</value>
+  </data>
+  <data name="SummonCrea" xml:space="preserve">
+    <value>Summable Creatures</value>
+  </data>
+  <data name="Colors" xml:space="preserve">
+    <value>Colors</value>
+  </data>
+  <data name="IsBoss" xml:space="preserve">
+    <value>Is a Boss ?</value>
+  </data>
+  <data name="IsSummonable" xml:space="preserve">
+    <value>Is Summonable ?</value>
+  </data>
+  <data name="AddMobGrade" xml:space="preserve">
+    <value>Add new MobGrade</value>
+  </data>
+  <data name="CreateMonster" xml:space="preserve">
+    <value>Create Monster</value>
+  </data>
+</root>
