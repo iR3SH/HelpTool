@@ -14,12 +14,12 @@ namespace HelpData.Classes.Game
         public string? Nom { get; set; }
         public int Sprite { get; set; }
         public string? SpriteInfos { get; set; }
-        public string? Lvl1 { get; set; }
-        public string? Lvl2 { get; set; }
-        public string? Lvl3 { get; set; }
-        public string? Lvl4 { get; set; }
-        public string? Lvl5 { get; set; }
-        public string? Lvl6 { get; set; }
+        public string? Lvl1 { get; set; } = "-1";
+        public string? Lvl2 { get; set; } = "-1";
+        public string? Lvl3 { get; set; } = "-1";
+        public string? Lvl4 { get; set; } = "-1";
+        public string? Lvl5 { get; set; } = "-1";
+        public string? Lvl6 { get; set; } = "-1";
         public string? EffectTarget { get; set; }
         public int Type { get; set; }
         public int Duration { get; set; }

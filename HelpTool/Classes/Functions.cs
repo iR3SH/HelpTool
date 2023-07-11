@@ -404,8 +404,6 @@ namespace HelpTool.Classes
             int num = 1;
             int num2 = jet2;
             int num3 = jet1;
-            string jetHex1 = num3.ToString("X");
-            string jetHex2 = num2.ToString("X");
             if (num2 == 0)
             {
                 num = 0;
@@ -3319,7 +3317,7 @@ namespace HelpTool.Classes
             {
                 new States()
                 {
-                    Id = 0,
+                    Id = -1,
                     Name = "Neutre"
                 },
                 new States()
@@ -3651,7 +3649,7 @@ namespace HelpTool.Classes
             {
                 new Zones()
                 {
-                    ZoneCode = "Pa",
+                    ZoneCode = "P",
                     Name = "Case",
                     IconPath = "case"
                 },
@@ -3852,6 +3850,73 @@ namespace HelpTool.Classes
             {
                 return effect.EffectId == 8 || effect.EffectId == 50 || effect.EffectId == 51;
             }
+        }
+        public static List<EffectsTarget> GetEffectsTargets()
+        {
+            List<EffectsTarget> effectsTargets = new()
+            {
+                new EffectsTarget()
+                {
+                    Id = 0,
+                    Name = "Tous le monde",
+                },
+                new EffectsTarget()
+                {
+                    Id = 1,
+                    Name = "Ennemi"
+                },
+                new EffectsTarget()
+                {
+                    Id = 2,
+                    Name = "Lui même"
+                },
+                new EffectsTarget()
+                {
+                    Id = 3,
+                    Name = "Les Alliés, les enemies et le lanceur"
+                },
+                new EffectsTarget()
+                {
+                    Id = 4,
+                    Name = "Le Lanceur et les Alliés"
+                },
+                new EffectsTarget()
+                {
+                    Id = 8,
+                    Name = "Invocations"
+                },
+                new EffectsTarget()
+                {
+                    Id = 10,
+                    Name = "Les invocations et les alliés"
+                },
+                new EffectsTarget()
+                {
+                    Id = 16,
+                    Name = "Les Ennemis et les Alliés"
+                },
+                new EffectsTarget()
+                {
+                    Id = 17,
+                    Name = "Les Ennemis et le Lanceur"
+                },
+                new EffectsTarget()
+                {
+                    Id = 18,
+                    Name = "Les Alliés et les Ennemis"
+                },
+                new EffectsTarget()
+                {
+                    Id = 32,
+                    Name = "Le Lanceur"
+                },
+                new EffectsTarget()
+                {
+                    Id = 64,
+                    Name = "Alliés sans le lanceur"
+                }
+            };
+            return effectsTargets;
         }
     }
 }

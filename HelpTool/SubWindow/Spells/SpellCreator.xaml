@@ -6,13 +6,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HelpTool.SubWindow.Spells"
         mc:Ignorable="d"
-        Title="SpellCreator" Height="1050" Width="900">
+        Title="SpellCreator" Height="1150" Width="900">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="120"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="120"/>
+            <RowDefinition Height="180"/>
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="Options">
@@ -50,7 +50,14 @@
             <TextBox x:Name="SpriteInfosTextbox" Grid.Row="3" Grid.Column="1" Text="0,0,0"/>
 
             <Label Content="Niveau du Sort" Grid.Row="0" Grid.Column="2"/>
-            <ListBox x:Name="LevelListBox" Grid.Row="1" Grid.RowSpan="3" Grid.Column="2" ItemsSource="{Binding Levels, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="SpellEffectLevel"/>
+            <ListBox x:Name="LevelListBox" Grid.Row="1" Grid.RowSpan="3" Grid.Column="2" ItemsSource="{Binding Levels, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="SpellEffectLevel">
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Editer" Click="EditSpellLevel"/>
+                        <MenuItem Header="{translator:Loc Delete}" Click="DeleteSpellLevel"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+            </ListBox>
         </Grid>
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
@@ -111,6 +118,8 @@
             <TextBox x:Name="DamageMin" Grid.Row="3" Grid.Column="0" Text="-1" PreviewTextInput="CheckIntValue"/>
             <Label Content="Dommages Max" x:Name="DoMaxLabel" Grid.Row="2" Grid.Column="1"/>
             <TextBox x:Name="DamageMax" Grid.Row="3" Grid.Column="1" Text="-1" PreviewTextInput="CheckIntValue"/>
+            <Label Content="EffectTarget" Grid.Row="4" Grid.Column="0"/>
+            <ComboBox x:Name="EffectTargetComboBox" Grid.Row="5" Grid.Column="0" ItemsSource="{Binding EffectsTargets, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectedIndex="0"/>
             <Label x:Name="GlypheColorLabel" Content="Couleur de la Glyphe" Grid.Row="4" Grid.Column="1" Visibility="Hidden"/>
             <ComboBox x:Name="GlypheColorComboBox" Grid.Row="5" Grid.Column="1" ItemsSource="{Binding Colors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" Visibility="Hidden" SelectedIndex="0"/>
             <Label Content="Durée de l'effet" Grid.Row="6" Grid.Column="0"/>
@@ -155,6 +164,11 @@
                 </ListBox.ContextMenu>
             </ListBox>
 
+            <Label Content="Level Requis" Grid.Row="2" Grid.Column="2"/>
+            <TextBox x:Name="RequiredLevelTextBox" Grid.Row="3" Grid.Column="2" Text="1" PreviewTextInput="CheckIntValue"/>
+            <Label Content="Etat" Grid.Row="4" Grid.Column="2"/>
+            <ComboBox x:Name="StateComboBox" Grid.Row="5" Grid.Column="2" ItemsSource="{Binding States, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectedIndex="0"/>
+
             <Label Content="Effets CC" Grid.Row="0" Grid.Column="3"/>
             <ComboBox x:Name="EffectsCCComboBox" ItemsSource="{Binding EffectsCC, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" SelectedIndex="0" SelectionChanged="EffectsCCComboBox_SelectionChanged">
                 <ComboBox.ItemTemplate>
@@ -181,6 +195,8 @@
             <TextBox x:Name="DamageMinCC" Grid.Row="3" Grid.Column="3" Text="-1" PreviewTextInput="CheckIntValue"/>
             <Label Content="Dommages Max" x:Name="DoMaxCCLabel" Grid.Row="2" Grid.Column="4"/>
             <TextBox x:Name="DamageMaxCC" Grid.Row="3" Grid.Column="4" Text="-1" PreviewTextInput="CheckIntValue"/>
+            <Label Content="EffectTarget" Grid.Row="4" Grid.Column="3"/>
+            <ComboBox x:Name="EffectTargetCCComboBox" Grid.Row="5" Grid.Column="3" ItemsSource="{Binding EffectsTargets, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectedIndex="0"/>
             <Label x:Name="GlypheColorCCLabel" Content="Couleur de la Glyphe" Grid.Row="4" Grid.Column="4" Visibility="Hidden"/>
             <ComboBox x:Name="GlypheColorCCComboBox" Grid.Row="5" Grid.Column="4" ItemsSource="{Binding Colors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" Visibility="Hidden" SelectedIndex="0"/>
             <Label Content="Durée de l'effet" Grid.Row="6" Grid.Column="3"/>
@@ -286,8 +302,6 @@
             <TextBox x:Name="LaunchPerTurnPerPlayer" Grid.Row="21" Grid.Column="2" Text="0" PreviewTextInput="CheckIntValue"/>
             <Label Content="Temps entre deux lancers" Grid.Row="20" Grid.Column="3"/>
             <TextBox x:Name="TurnBetweenTwoLaunch" Grid.Row="21" Grid.Column="3" Text="0" PreviewTextInput="CheckIntValue"/>
-            <Label Content="Etat" Grid.Row="20" Grid.Column="4"/>
-            <ComboBox x:Name="StateComboBox" Grid.Row="21" Grid.Column="4" ItemsSource="{Binding States, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectedIndex="0"/>
 
             <Button x:Name="AddNewSpellLevelButton" Content="Ajouter un niveau de Sort" Grid.Row="22" Grid.ColumnSpan="5" Click="AddNewSpellLevelButton_Click"/>
         </Grid>
@@ -296,7 +310,13 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            <Label Content="Description" Grid.Row="0"/>
+            <TextBox x:Name="DescriptionTextBox" Grid.Row="1"/>
+            <Button x:Name="GenerateSpellButton" Content="Créer le Sort" Grid.Row="2" Click="GenerateSpellButton_Click"/>
+            <TextBox x:Name="SWFTextBox" Grid.Row="3" Grid.RowSpan="2" IsReadOnly="True"/>
         </Grid>
     </Grid>
 </Window>

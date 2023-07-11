@@ -14,6 +14,7 @@ namespace HelpData.Classes.Spells
         public int GlypheColor { get; set; }
         public int SpellDuration { get; set; }
         public int Probability { get; set; }
+        public int EffectTarget { get; set; }
         public string? Zone { get; set; }
         public string? DisplayName { get; set; }
         public string? IconPath { get; set; }

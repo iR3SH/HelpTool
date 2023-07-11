@@ -12,7 +12,9 @@ namespace HelpData.Classes.Spells
         public int SpellEffectLevel { get; set; }
         public int SpellId { get; set; }
         public string? Effect { get; set; }
+        public string? EffectSwf { get; set; }
         public string? EffectCC { get; set; }
+        public string? EffectCCSwf { get; set; }
         public int PaCost { get; set; }
         public int PoMin { get; set; }
         public int PoMax { get; set; }
@@ -29,5 +31,7 @@ namespace HelpData.Classes.Spells
         public int LaunchPerTurn { get; set; }
         public int LaunchPerTurnPerPlayer { get; set; }
         public int TurnBetweenTwoLaunch { get; set; }
+        public string? EffectTarget { get; set; }
+        public int RequiredLevel { get; set; }
     }
 }

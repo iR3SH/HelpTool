@@ -1,25 +1,19 @@
-﻿using HelpData.Classes.Spells;
+﻿using HelpData.Classes.Game;
+using HelpData.Classes.Spells;
 using HelpTool.Classes;
 using HelpTool.Languages;
-using Org.BouncyCastle.Bcpg.OpenPgp;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace HelpTool.SubWindow.Spells
 {
@@ -47,10 +41,13 @@ namespace HelpTool.SubWindow.Spells
         public ObservableCollection<States>? States { get { return _States; } set { _States = value; NotifyPropertyChanged(); } }
         private ObservableCollection<Zones>? _Zones { get; set; }
         public ObservableCollection<Zones>? Zones { get { return _Zones; } set { _Zones = value; NotifyPropertyChanged(); } }
-        private ObservableCollection<HelpData.Classes.Spells.Colors>? _Colors { get; set; }
-        public ObservableCollection<HelpData.Classes.Spells.Colors>? Colors { get { return _Colors; } set { _Colors = value; NotifyPropertyChanged(); } }
+        private ObservableCollection<Colors>? _Colors { get; set; }
+        public ObservableCollection<Colors>? Colors { get { return _Colors; } set { _Colors = value; NotifyPropertyChanged(); } }
         private ObservableCollection<SpellTypes>? _SpellTypes { get; set; }
         public ObservableCollection<SpellTypes>? SpellTypes { get { return _SpellTypes; } set { _SpellTypes = value; NotifyPropertyChanged(); } }
+        private ObservableCollection<EffectsTarget>? _EffectsTargets { get; set; }
+        public ObservableCollection<EffectsTarget>? EffectsTargets { get { return _EffectsTargets; } set { _EffectsTargets = value; NotifyPropertyChanged(); } }
+        private SpellsEffects? CurrentEditedEffect { get; set; }
 
         public SpellCreator()
         {
@@ -69,6 +66,7 @@ namespace HelpTool.SubWindow.Spells
             Zones = new(Functions.GetZones());
             Colors = new(Functions.GetGlypheColors());
             SpellTypes = new(Functions.GetSpellTypes());
+            EffectsTargets = new(Functions.GetEffectsTargets());
         }
         private void CheckIntValue(object sender, TextCompositionEventArgs e)
         {
@@ -87,6 +85,30 @@ namespace HelpTool.SubWindow.Spells
             EnglishButton.IsChecked = true;
             FrenchButton.IsChecked = false;
         }
+        private void ResetOtherValues()
+        {
+            IdTextBox.Text = "0";
+            NameTextBox.Text = "";
+            SpriteTextBox.Text = "0";
+            SpriteInfosTextbox.Text = "0,0,0";
+            LevelListBox.Items.Clear();
+            PaTextbox.Text = "0";
+            PoMinTextBox.Text = "0";
+            PoMaxTextBox.Text = "0";
+            CCTextBox.Text = "0";
+            ECTextBox.Text = "0";
+            InlineLaunch.IsChecked = false;
+            LDV.IsChecked = false;
+            EmptyCell.IsChecked = false;
+            PoModifiable.IsChecked = false;
+            EcFinishTurn.IsChecked = false;
+            SpellType.SelectedIndex = 0;
+            LaunchPerTurn.Text = "0";
+            LaunchPerTurnPerPlayer.Text = "0";
+            TurnBetweenTwoLaunch.Text = "0";
+            StateComboBox.SelectedIndex = 0;
+            RequiredLevelTextBox.Text = "0";
+        }
 
         private void ResetEffectValues()
         {
@@ -97,7 +119,8 @@ namespace HelpTool.SubWindow.Spells
             ReuEffectTextBox.Text = "0";
             ZoneComboBox.SelectedIndex = 0;
             ZoneSizeTextBox.Text = "0";
-        }
+            EffectTargetComboBox.SelectedIndex = 0;
+;        }
         private void ResetEffectCCValues()
         {
             EffectsCCComboBox.SelectedIndex = 0;
@@ -107,11 +130,12 @@ namespace HelpTool.SubWindow.Spells
             ReuEffectCCTextBox.Text = "0";
             ZoneCCComboBox.SelectedIndex = 0;
             ZoneSizeCCTextBox.Text = "0";
+            EffectTargetCCComboBox.SelectedIndex = 0;
         }
 
         private void AddEffect_Click(object sender, RoutedEventArgs e)
         {
-            if (EffectsComboBox.SelectedIndex > -1 && !string.IsNullOrEmpty(DamageMin.Text) && !string.IsNullOrEmpty(DamageMax.Text) && !string.IsNullOrEmpty(DureeEffectTextBox.Text) && !string.IsNullOrEmpty(ReuEffectTextBox.Text) && ZoneComboBox.SelectedIndex > -1 && !string.IsNullOrEmpty(ZoneSizeTextBox.Text))
+            if (EffectsComboBox.SelectedIndex > -1 && EffectTargetComboBox.SelectedIndex > -1 && !string.IsNullOrEmpty(DamageMin.Text) && !string.IsNullOrEmpty(DamageMax.Text) && !string.IsNullOrEmpty(DureeEffectTextBox.Text) && !string.IsNullOrEmpty(ReuEffectTextBox.Text) && ZoneComboBox.SelectedIndex > -1 && !string.IsNullOrEmpty(ZoneSizeTextBox.Text))
             {
                 if (EffectsComboBox.SelectedItem is Effects effect)
                 {
@@ -123,21 +147,25 @@ namespace HelpTool.SubWindow.Spells
                             {
                                 if (GlypheColorCCComboBox.SelectedItem is HelpData.Classes.Spells.Colors color)
                                 {
-                                    SelectedEffects selectedEffects = new()
+                                    if (EffectTargetComboBox.SelectedItem is EffectsTarget target)
                                     {
-                                        Effect = effect,
-                                        DamageMin = Convert.ToInt32(DamageMin.Text),
-                                        DamageMax = Convert.ToInt32(DamageMax.Text),
-                                        GlypheColor = color.Id,
-                                        SpellDuration = Convert.ToInt32(DureeEffectTextBox.Text),
-                                        Probability = Convert.ToInt32(ReuEffectTextBox.Text),
-                                        Zone = zone.ZoneCode + Functions.GetIntByHashedValue(Convert.ToInt32(ZoneSizeTextBox.Text)),
-                                        DisplayName = effect.Name,
-                                        IconPath = effect.ImagePath
-                                    };
-                                    selectedEffects.DisplayName = selectedEffects.DisplayName?.Replace("Min", DamageMin.Text).Replace("Max", DamageMax.Text).Replace("#3", DamageMax.Text);
-                                    SelectedEffects.Add(selectedEffects);
-                                    ResetEffectValues();
+                                        SelectedEffects selectedEffects = new()
+                                        {
+                                            Effect = effect,
+                                            DamageMin = Convert.ToInt32(DamageMin.Text),
+                                            DamageMax = Convert.ToInt32(DamageMax.Text),
+                                            GlypheColor = color.Id,
+                                            SpellDuration = Convert.ToInt32(DureeEffectTextBox.Text),
+                                            Probability = Convert.ToInt32(ReuEffectTextBox.Text),
+                                            Zone = zone.ZoneCode + Functions.GetIntByHashedValue(Convert.ToInt32(ZoneSizeTextBox.Text)),
+                                            DisplayName = effect.Name,
+                                            IconPath = effect.ImagePath,
+                                            EffectTarget = target.Id
+                                        };
+                                        selectedEffects.DisplayName = selectedEffects.DisplayName?.Replace("Min", DamageMin.Text).Replace("Max", DamageMax.Text).Replace("#3", DamageMax.Text);
+                                        SelectedEffects.Add(selectedEffects);
+                                        ResetEffectValues();
+                                    }
                                 }
                             }
                         }
@@ -152,7 +180,7 @@ namespace HelpTool.SubWindow.Spells
 
         private void AddEffectCC_Click(object sender, RoutedEventArgs e)
         {
-            if(EffectsCCComboBox.SelectedIndex > -1 && !string.IsNullOrEmpty(DamageMinCC.Text) && !string.IsNullOrEmpty(DamageMaxCC.Text) && !string.IsNullOrEmpty(DureeEffectCCTextBox.Text) && !string.IsNullOrEmpty(ReuEffectCCTextBox.Text) && ZoneCCComboBox.SelectedIndex > -1 && !string.IsNullOrEmpty(ZoneSizeCCTextBox.Text))
+            if(EffectsCCComboBox.SelectedIndex > -1 && EffectTargetCCComboBox.SelectedIndex > -1 && !string.IsNullOrEmpty(DamageMinCC.Text) && !string.IsNullOrEmpty(DamageMaxCC.Text) && !string.IsNullOrEmpty(DureeEffectCCTextBox.Text) && !string.IsNullOrEmpty(ReuEffectCCTextBox.Text) && ZoneCCComboBox.SelectedIndex > -1 && !string.IsNullOrEmpty(ZoneSizeCCTextBox.Text))
             {
                 if (EffectsCCComboBox.SelectedItem is Effects effect)
                 {
@@ -164,21 +192,25 @@ namespace HelpTool.SubWindow.Spells
                             {
                                 if (GlypheColorCCComboBox.SelectedItem is HelpData.Classes.Spells.Colors color)
                                 {
-                                    SelectedEffects selectedEffects = new()
+                                    if (EffectTargetCCComboBox.SelectedItem is EffectsTarget target)
                                     {
-                                        Effect = effect,
-                                        DamageMin = Convert.ToInt32(DamageMinCC.Text),
-                                        DamageMax = Convert.ToInt32(DamageMaxCC.Text),
-                                        GlypheColor = color.Id,
-                                        SpellDuration = Convert.ToInt32(DureeEffectCCTextBox.Text),
-                                        Probability = Convert.ToInt32(ReuEffectCCTextBox.Text),
-                                        Zone = zone.ZoneCode + Functions.GetIntByHashedValue(Convert.ToInt32(ZoneSizeCCTextBox.Text)),
-                                        DisplayName = effect.Name,
-                                        IconPath = effect.ImagePath
-                                    };
-                                    selectedEffects.DisplayName = selectedEffects.DisplayName?.Replace("Min", DamageMinCC.Text).Replace("Max", DamageMaxCC.Text).Replace("#3", DamageMax.Text);
-                                    SelectedEffectsCC.Add(selectedEffects);
-                                    ResetEffectCCValues();
+                                        SelectedEffects selectedEffects = new()
+                                        {
+                                            Effect = effect,
+                                            DamageMin = Convert.ToInt32(DamageMinCC.Text),
+                                            DamageMax = Convert.ToInt32(DamageMaxCC.Text),
+                                            GlypheColor = color.Id,
+                                            SpellDuration = Convert.ToInt32(DureeEffectCCTextBox.Text),
+                                            Probability = Convert.ToInt32(ReuEffectCCTextBox.Text),
+                                            Zone = zone.ZoneCode + Functions.GetIntByHashedValue(Convert.ToInt32(ZoneSizeCCTextBox.Text)),
+                                            DisplayName = effect.Name,
+                                            IconPath = effect.ImagePath,
+                                            EffectTarget = target.Id
+                                        };
+                                        selectedEffects.DisplayName = selectedEffects.DisplayName?.Replace("Min", DamageMinCC.Text).Replace("Max", DamageMaxCC.Text).Replace("#3", DamageMax.Text);
+                                        SelectedEffectsCC.Add(selectedEffects);
+                                        ResetEffectCCValues();
+                                    }
                                 }
                             }
                         }
@@ -378,90 +410,304 @@ namespace HelpTool.SubWindow.Spells
 
         private void AddNewSpellLevelButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Levels != null)
-            {
-                if (Levels.Count < 6)
+            if(CurrentEditedEffect == null) {
+                if (Levels != null)
                 {
-                    if (IdTextBox.Text.Length > 0)
+                    if (Levels.Count < 6)
                     {
-                        if (PaTextbox.Text.Length > 0 && PoMinTextBox.Text.Length > 0 && PoMaxTextBox.Text.Length > 0 && CCTextBox.Text.Length > 0 && ECTextBox.Text.Length > 0 && LaunchPerTurn.Text.Length > 0 && LaunchPerTurnPerPlayer.Text.Length > 0 && TurnBetweenTwoLaunch.Text.Length > 0)
+                        if (IdTextBox.Text.Length > 0)
                         {
-                            string effect = "";
-                            string effectCC = "";
-                            string zone = "";
-                            if (SelectedEffects != null)
+                            if (PaTextbox.Text.Length > 0 && StateComboBox.SelectedIndex > -1 && PoMinTextBox.Text.Length > 0 && PoMaxTextBox.Text.Length > 0 && CCTextBox.Text.Length > 0 && ECTextBox.Text.Length > 0 && LaunchPerTurn.Text.Length > 0 && LaunchPerTurnPerPlayer.Text.Length > 0 && TurnBetweenTwoLaunch.Text.Length > 0 && RequiredLevelTextBox.Text.Length > 0)
                             {
-                                if (SelectedEffects.Count > 0)
+                                string effect = "";
+                                string effectCC = "";
+                                string zone = "";
+                                string effectTarget = "";
+                                string effectTargetCC = "";
+                                string effectSwf = "[";
+                                string effectCCSwf = "[";
+                                if (SelectedEffects != null)
                                 {
-                                    for (int i = 0; i < SelectedEffects.Count; i++)
+                                    if (SelectedEffects.Count > 0)
                                     {
-                                        zone += SelectedEffects[i].Zone;
-                                        if (i != SelectedEffects.Count - 1)
+                                        for (int i = 0; i < SelectedEffects.Count; i++)
                                         {
-                                            effect += SelectedEffects[i].Effect?.EffectId + ";" + SelectedEffects[i].DamageMin + ";" + SelectedEffects[i].DamageMax + ";" + SelectedEffects[i].GlypheColor + ";" + SelectedEffects[i].SpellDuration + ";" + SelectedEffects[i].Probability + ";" + Functions.CalcJetD(SelectedEffects[i].DamageMin, SelectedEffects[i].DamageMax) + "|";
+                                            zone += SelectedEffects[i].Zone;
+                                            if (i != SelectedEffects.Count - 1)
+                                            {
+                                                effectTarget += SelectedEffects[i].EffectTarget + ";";
+                                                effect += SelectedEffects[i].Effect?.EffectId + ";" + SelectedEffects[i].DamageMin + ";" + SelectedEffects[i].DamageMax + ";" + SelectedEffects[i].GlypheColor + ";" + SelectedEffects[i].SpellDuration + ";" + SelectedEffects[i].Probability + ";" + Functions.CalcJetD(SelectedEffects[i].DamageMin, SelectedEffects[i].DamageMax) + "|";
+                                                effectSwf += "[" + SelectedEffects[i].Effect?.EffectId + "," + SelectedEffects[i].DamageMin + "," + (SelectedEffects[i].DamageMax <= 0 ? "null" : SelectedEffects[i].DamageMax) + "," + (SelectedEffects[i].GlypheColor <= 0 ? "null" : SelectedEffects[i].GlypheColor) + "," + (SelectedEffects[i].SpellDuration < 0 ? "null" : SelectedEffects[i].SpellDuration) + "," + SelectedEffects[i].Probability + ",\"" + Functions.CalcJetD(SelectedEffects[i].DamageMin, SelectedEffects[i].DamageMax) + "\"],";
+                                            }
+                                            else
+                                            {
+                                                effectTarget += SelectedEffects[i].EffectTarget;
+                                                effect += SelectedEffects[i].Effect?.EffectId + ";" + SelectedEffects[i].DamageMin + ";" + SelectedEffects[i].DamageMax + ";" + SelectedEffects[i].GlypheColor + ";" + SelectedEffects[i].SpellDuration + ";" + SelectedEffects[i].Probability + ";" + Functions.CalcJetD(SelectedEffects[i].DamageMin, SelectedEffects[i].DamageMax);
+                                                effectSwf += "[" + SelectedEffects[i].Effect?.EffectId + "," + SelectedEffects[i].DamageMin + "," + (SelectedEffects[i].DamageMax <= 0 ? "null" : SelectedEffects[i].DamageMax) + "," + (SelectedEffects[i].GlypheColor <= 0 ? "null" : SelectedEffects[i].GlypheColor) + "," + (SelectedEffects[i].SpellDuration < 0 ? "null" : SelectedEffects[i].SpellDuration) + "," + SelectedEffects[i].Probability + ",\"" + Functions.CalcJetD(SelectedEffects[i].DamageMin, SelectedEffects[i].DamageMax) + "\"]";
+                                            }
                                         }
-                                        else
-                                        {
-                                            effect += SelectedEffects[i].Effect?.EffectId + ";" + SelectedEffects[i].DamageMin + ";" + SelectedEffects[i].DamageMax + ";" + SelectedEffects[i].GlypheColor + ";" + SelectedEffects[i].SpellDuration + ";" + SelectedEffects[i].Probability + ";" + Functions.CalcJetD(SelectedEffects[i].DamageMin, SelectedEffects[i].DamageMax);
-                                        }
+                                        effectSwf += "]";
                                     }
                                 }
-                            }
-                            if (SelectedEffectsCC != null)
-                            {
-                                if (SelectedEffectsCC.Count > 0)
+                                if (SelectedEffectsCC != null)
                                 {
-                                    effectCC += ",";
-                                    for (int i = 0; i < SelectedEffectsCC.Count; i++)
+                                    if (SelectedEffectsCC.Count > 0)
                                     {
-                                        zone += SelectedEffectsCC[i].Zone;
-                                        if (i != SelectedEffectsCC.Count - 1)
+                                        for (int i = 0; i < SelectedEffectsCC.Count; i++)
                                         {
-                                            effectCC += SelectedEffectsCC[i].Effect?.EffectId + ";" + SelectedEffectsCC[i].DamageMin + ";" + SelectedEffectsCC[i].DamageMax + ";" + SelectedEffectsCC[i].GlypheColor + ";" + SelectedEffectsCC[i].SpellDuration + ";" + SelectedEffectsCC[i].Probability + ";" + Functions.CalcJetD(SelectedEffectsCC[i].DamageMin, SelectedEffectsCC[i].DamageMax) + "|";
+                                            zone += SelectedEffectsCC[i].Zone;
+                                            if (i != SelectedEffectsCC.Count - 1)
+                                            {
+                                                effectTargetCC += SelectedEffectsCC[i].EffectTarget + ";";
+                                                effectCC += SelectedEffectsCC[i].Effect?.EffectId + ";" + SelectedEffectsCC[i].DamageMin + ";" + SelectedEffectsCC[i].DamageMax + ";" + SelectedEffectsCC[i].GlypheColor + ";" + SelectedEffectsCC[i].SpellDuration + ";" + SelectedEffectsCC[i].Probability + ";" + Functions.CalcJetD(SelectedEffectsCC[i].DamageMin, SelectedEffectsCC[i].DamageMax) + "|";
+                                                effectCCSwf += "[" + SelectedEffectsCC[i].Effect?.EffectId + "," + SelectedEffectsCC[i].DamageMin + "," + (SelectedEffectsCC[i].DamageMax <= 0 ? "null" : SelectedEffectsCC[i].DamageMax) + "," + (SelectedEffectsCC[i].GlypheColor <= 0 ? "null" : SelectedEffectsCC[i].GlypheColor) + "," + (SelectedEffectsCC[i].SpellDuration < 0 ? "null" : SelectedEffectsCC[i].SpellDuration) + "," + SelectedEffectsCC[i].Probability + ",\"" + Functions.CalcJetD(SelectedEffectsCC[i].DamageMin, SelectedEffectsCC[i].DamageMax) + "\"],";
+
+                                            }
+                                            else
+                                            {
+                                                effectTargetCC += SelectedEffectsCC[i].EffectTarget;
+                                                effectCC += SelectedEffectsCC[i].Effect?.EffectId + ";" + SelectedEffectsCC[i].DamageMin + ";" + SelectedEffectsCC[i].DamageMax + ";" + SelectedEffectsCC[i].GlypheColor + ";" + SelectedEffectsCC[i].SpellDuration + ";" + SelectedEffectsCC[i].Probability + ";" + Functions.CalcJetD(SelectedEffectsCC[i].DamageMin, SelectedEffectsCC[i].DamageMax);
+                                                effectCCSwf += "[" + SelectedEffectsCC[i].Effect?.EffectId + "," + SelectedEffectsCC[i].DamageMin + "," + (SelectedEffectsCC[i].DamageMax <= 0 ? "null" : SelectedEffectsCC[i].DamageMax) + "," + (SelectedEffectsCC[i].GlypheColor <= 0 ? "null" : SelectedEffectsCC[i].GlypheColor) + "," + (SelectedEffectsCC[i].SpellDuration < 0 ? "null" : SelectedEffectsCC[i].SpellDuration) + "," + SelectedEffectsCC[i].Probability + ",\"" + Functions.CalcJetD(SelectedEffectsCC[i].DamageMin, SelectedEffectsCC[i].DamageMax) + "\"]";
+                                            }
                                         }
-                                        else
-                                        {
-                                            effectCC += SelectedEffectsCC[i].Effect?.EffectId + ";" + SelectedEffectsCC[i].DamageMin + ";" + SelectedEffectsCC[i].DamageMax + ";" + SelectedEffectsCC[i].GlypheColor + ";" + SelectedEffectsCC[i].SpellDuration + ";" + SelectedEffectsCC[i].Probability + ";" + Functions.CalcJetD(SelectedEffectsCC[i].DamageMin, SelectedEffectsCC[i].DamageMax);
-                                        }
+                                        effectCCSwf += "]";
+                                    }
+                                    else
+                                    {
+                                        effectCCSwf = "null";
                                     }
                                 }
-                            }
-                            if (SpellType.SelectedItem is SpellTypes spellType)
-                            {
-                                if (StateComboBox.SelectedItem is States state)
+                                if (SpellType.SelectedItem is SpellTypes spellType)
                                 {
-                                    SpellsEffects spellEffect = new()
+                                    if (StateComboBox.SelectedItem is States state)
                                     {
-                                        SpellEffectLevel = Levels!.Count + 1,
-                                        SpellId = Convert.ToInt32(IdTextBox.Text),
-                                        Effect = effect,
-                                        EffectCC = effectCC,
-                                        PaCost = Convert.ToInt32(PaTextbox.Text),
-                                        PoMin = Convert.ToInt32(PoMinTextBox.Text),
-                                        PoMax = Convert.ToInt32(PoMaxTextBox.Text),
-                                        CC = Convert.ToInt32(CCTextBox.Text),
-                                        EC = Convert.ToInt32(ECTextBox.Text),
-                                        Zone = zone,
-                                        IsInlineLaunch = InlineLaunch.IsChecked == true,
-                                        IsWithoutLdv = LDV.IsChecked == true,
-                                        IsEmptycell = EmptyCell.IsChecked == true,
-                                        IsPoEditable = PoModifiable.IsChecked == true,
-                                        IsEcFinishTurn = EcFinishTurn.IsChecked == true,
-                                        SpellType = spellType.Id,
-                                        RequireState = state.Id,
-                                        LaunchPerTurn = Convert.ToInt32(LaunchPerTurn.Text),
-                                        LaunchPerTurnPerPlayer = Convert.ToInt32(LaunchPerTurnPerPlayer.Text),
-                                        TurnBetweenTwoLaunch = Convert.ToInt32(TurnBetweenTwoLaunch.Text)
-                                    };
-                                    Levels?.Add(spellEffect);
+                                        SpellsEffects spellEffect = new()
+                                        {
+                                            SpellEffectLevel = Levels.Count + 1,
+                                            SpellId = Convert.ToInt32(IdTextBox.Text),
+                                            Effect = effect,
+                                            EffectSwf = effectSwf,
+                                            EffectCC = effectCC,
+                                            EffectCCSwf = effectCCSwf,
+                                            PaCost = Convert.ToInt32(PaTextbox.Text),
+                                            PoMin = Convert.ToInt32(PoMinTextBox.Text),
+                                            PoMax = Convert.ToInt32(PoMaxTextBox.Text),
+                                            CC = Convert.ToInt32(CCTextBox.Text),
+                                            EC = Convert.ToInt32(ECTextBox.Text),
+                                            Zone = zone,
+                                            IsInlineLaunch = InlineLaunch.IsChecked == true,
+                                            IsWithoutLdv = LDV.IsChecked == true,
+                                            IsEmptycell = EmptyCell.IsChecked == true,
+                                            IsPoEditable = PoModifiable.IsChecked == true,
+                                            IsEcFinishTurn = EcFinishTurn.IsChecked == true,
+                                            SpellType = spellType.Id,
+                                            RequireState = state.Id,
+                                            LaunchPerTurn = Convert.ToInt32(LaunchPerTurn.Text),
+                                            LaunchPerTurnPerPlayer = Convert.ToInt32(LaunchPerTurnPerPlayer.Text),
+                                            TurnBetweenTwoLaunch = Convert.ToInt32(TurnBetweenTwoLaunch.Text),
+                                            EffectTarget = effectTarget + ":" + effectTargetCC,
+                                            RequiredLevel = Convert.ToInt32(RequiredLevelTextBox.Text)
+                                        };
+                                        Levels?.Add(spellEffect);
+                                        ResetEffectValues();
+                                        ResetEffectCCValues();
+                                        SelectedEffects?.Clear();
+                                        SelectedEffectsCC?.Clear();
+                                    }
                                 }
                             }
                         }
+                        else
+                        {
+                            MessageBox.Show("Vous devez saisir l'id du Spell pour créer un niveau de sort", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
                     }
-                    else
+                }
+            }
+            else
+            {
+            }
+        }
+
+        private async void GenerateSpellButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Levels != null)
+            {
+                if (Levels.Count > 0)
+                {
+                    if(IdTextBox.Text.Length > 0 && NameTextBox.Text.Length > 0 && SpriteTextBox.Text.Length > 0 && SpriteInfosTextbox.Text.Length > 0 && SpellType.SelectedIndex > -1)
                     {
-                        MessageBox.Show("Vous devez saisir l'id du Spell pour créer un niveau de sort", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        if (SpellType.SelectedItem is SpellTypes spellType)
+                        {
+                            string[] levels = new string[Levels.Count];
+                            string[] levelsSwf = new string[Levels.Count];
+                            string effectTarget = "";
+                            for (int i = 0; i < Levels.Count; i++)
+                            {
+                                SpellsEffects effect = Levels[i];
+                                if (i == 0)
+                                {
+                                    effectTarget = effect.EffectTarget!;
+                                }
+                                else
+                                {
+                                    effectTarget = effectTarget.Split(":")[0] + ";" + effect.EffectTarget!.Split(":")[0] + ":" + effectTarget.Split(':')[1] + ";" + effect.EffectTarget!.Split(':')[1];
+                                }
+                                if (!string.IsNullOrEmpty(effect.EffectCC))
+                                {
+                                    levels[i] = effect.Effect + "," + effect.EffectCC + "," + effect.PaCost + "," + effect.PoMin + "," + effect.PoMax + "," + effect.CC + "," + effect.EC + "," + effect.IsInlineLaunch.ToString().ToLower() + "," + effect.IsWithoutLdv.ToString().ToLower() + "," + effect.IsEmptycell.ToString().ToLower() + "," + effect.IsPoEditable.ToString().ToLower() + "," + effect.SpellType + "," + effect.LaunchPerTurn + "," + effect.LaunchPerTurnPerPlayer + "," + effect.TurnBetweenTwoLaunch + "," + effect.Zone + "," + effect.RequireState + ",18;19;3;1;41," + effect.RequiredLevel + "," + effect.IsEcFinishTurn.ToString().ToLower();
+                                    levelsSwf[i] = "[" + effect.EffectSwf + "," + effect.EffectCCSwf + "," + effect.PaCost + "," + effect.PoMin + "," + effect.PoMax + "," + effect.CC + "," + effect.EC + "," + effect.IsInlineLaunch.ToString().ToLower() + "," + effect.IsWithoutLdv.ToString().ToLower() + "," + effect.IsEmptycell.ToString().ToLower() + "," + effect.IsPoEditable.ToString().ToLower() + "," + effect.SpellType + "," + effect.LaunchPerTurn + "," + effect.LaunchPerTurnPerPlayer + "," + effect.TurnBetweenTwoLaunch + ",\"" + effect.Zone + "\",[" + (effect.RequireState <= 0 ? "" : effect.RequireState) + "], [18, 19, 41, 1, 3]," + effect.RequiredLevel + "," + effect.IsEcFinishTurn.ToString().ToLower() + "]";
+                                }
+                                else
+                                {
+                                    levels[i] = effect.Effect + ",-1," + effect.PaCost + "," + effect.PoMin + "," + effect.PoMax + "," + effect.CC + "," + effect.EC + "," + effect.IsInlineLaunch.ToString().ToLower() + "," + effect.IsWithoutLdv.ToString().ToLower() + "," + effect.IsEmptycell.ToString().ToLower() + "," + effect.IsPoEditable.ToString().ToLower() + "," + effect.SpellType + "," + effect.LaunchPerTurn + "," + effect.LaunchPerTurnPerPlayer + "," + effect.TurnBetweenTwoLaunch + "," + effect.Zone + "," + effect.RequireState + ",18;19;3;1;41," + effect.RequiredLevel + "," + effect.IsEcFinishTurn.ToString().ToLower();
+                                    levelsSwf[i] = "[" + effect.EffectSwf + ",null," + effect.PaCost + "," + effect.PoMin + "," + effect.PoMax + "," + effect.CC + "," + effect.EC + "," + effect.IsInlineLaunch.ToString().ToLower() + "," + effect.IsWithoutLdv.ToString().ToLower() + "," + effect.IsEmptycell.ToString().ToLower() + "," + effect.IsPoEditable.ToString().ToLower() + "," + effect.SpellType + "," + effect.LaunchPerTurn + "," + effect.LaunchPerTurnPerPlayer + "," + effect.TurnBetweenTwoLaunch + ",\"" + effect.Zone + "\",[" + (effect.RequireState <= 0 ? "" : effect.RequireState) + "], [18, 19, 41, 1, 3]," + effect.RequiredLevel + "," + effect.IsEcFinishTurn.ToString().ToLower() + "]";
+                                }
+                            }
+                            Sorts? newSpell = await SharedObjects.SortsRepository!.Get(Convert.ToInt32(IdTextBox.Text));
+                            if (newSpell != null)
+                            {
+                                newSpell = new()
+                                {
+                                    Id = Convert.ToInt32(IdTextBox.Text),
+                                    Nom = NameTextBox.Text,
+                                    Sprite = Convert.ToInt32(SpriteTextBox.Text),
+                                    SpriteInfos = SpriteInfosTextbox.Text,
+                                    EffectTarget = effectTarget,
+                                    Type = spellType.Id < 0 ? 0 : spellType.Id,
+                                    Duration = 800
+                                };
+                                for (int i = 0; i < levels.Length; i++)
+                                {
+                                    switch (i)
+                                    {
+                                        case 0:
+                                            newSpell.Lvl1 = levels[i];
+                                            break;
+                                        case 1:
+                                            newSpell.Lvl2 = levels[i];
+                                            break;
+                                        case 2:
+                                            newSpell.Lvl3 = levels[i];
+                                            break;
+                                        case 3:
+                                            newSpell.Lvl4 = levels[i];
+                                            break;
+                                        case 4:
+                                            newSpell.Lvl5 = levels[i];
+                                            break;
+                                        case 5:
+                                            newSpell.Lvl6 = levels[i];
+                                            break;
+                                    }
+                                }
+                                await SharedObjects.SortsRepository!.Create(newSpell);
+                                StringBuilder builder = new();
+                                builder.Append("S[").Append(IdTextBox.Text).Append("] = n:\"" + NameTextBox.Text + "\", d:\"" + DescriptionTextBox.Text + "\"");
+                                for (int i = 0; i < levelsSwf.Length; i++)
+                                {
+                                    builder.Append(",l").Append(i + 1).Append(':').Append(levelsSwf[i]);
+                                }
+                                builder.Append("};");
+                                SWFTextBox.Text = builder.ToString();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Error", "Votre base de données contient déjà un sort avec cet identifiant");
+                            }
+                        }
                     }
+                }
+            }
+        }
+        private void DeleteSpellLevel(object sender, RoutedEventArgs e)
+        {
+            if (LevelListBox.SelectedItem is SpellsEffects effects)
+            {
+                if(CurrentEditedEffect != null)
+                {
+                    CurrentEditedEffect = null;
+                    ResetEffectValues();
+                    ResetEffectCCValues();
+                    SelectedEffects?.Clear();
+                    SelectedEffectsCC?.Clear();
+                }
+                if (Levels != null)
+                {
+                    Levels.Remove(effects);
+                    for (int i = 0; i < Levels.Count; i++)
+                    {
+                        Levels[i].SpellEffectLevel = i + 1;
+                    }
+                    LevelListBox.ItemsSource = null;
+                    LevelListBox.ItemsSource = Levels;
+                }
+            }
+        }
+        private void EditSpellLevel(object sender, RoutedEventArgs e)
+        {
+            if (LevelListBox.SelectedItem is SpellsEffects effects)
+            {
+                if (CurrentEditedEffect == null)
+                {
+                    CurrentEditedEffect = effects;
+                    ResetEffectValues();
+                    ResetEffectCCValues();
+                    SelectedEffects?.Clear();
+                    SelectedEffectsCC?.Clear();
+                    if (CurrentEditedEffect.Effect != null)
+                    {
+                        string[] splitedEffects = CurrentEditedEffect.Effect.Split('|');
+                        string[]? splitedEffectsCC = CurrentEditedEffect.EffectCC?.Split('|');
+                        int numbEffect = 0;
+                        for (int i = 0; i < splitedEffects.Length; i++)
+                        {
+                            Effects effect = Effects!.First(c => c.EffectId == Convert.ToInt32(splitedEffects[i].Split(';')[0]));
+                            SelectedEffects selectedEffect = new()
+                            {
+                                Effect = effect,
+                                DamageMin = Convert.ToInt32(splitedEffects[i].Split(';')[1]),
+                                DamageMax = Convert.ToInt32(splitedEffects[i].Split(';')[2]),
+                                GlypheColor = Convert.ToInt32(splitedEffects[i].Split(';')[3]),
+                                SpellDuration = Convert.ToInt32(splitedEffects[i].Split(';')[4]),
+                                Probability = Convert.ToInt32(splitedEffects[i].Split(';')[5]),
+                                Zone = CurrentEditedEffect.Zone!.Substring(i * 2, 2 + (i * 2)),
+                                DisplayName = effect.Name,
+                                IconPath = effect.ImagePath,
+                                EffectTarget = Convert.ToInt32(CurrentEditedEffect.EffectTarget!.Split(':')[0].Split(';')[i])
+                            };
+                            selectedEffect.DisplayName = selectedEffect.DisplayName?.Replace("Min", selectedEffect.DamageMin.ToString()).Replace("Max", selectedEffect.DamageMax.ToString()).Replace("#3", selectedEffect.DamageMax.ToString());
+                            SelectedEffects?.Add(selectedEffect);
+                            numbEffect++;
+                        }
+
+                        if (splitedEffectsCC != null)
+                        {
+                            for (int i = 0; i < splitedEffectsCC.Length; i++)
+                            {
+                                Effects effectCC = EffectsCC!.First(c => c.EffectId == Convert.ToInt32(splitedEffectsCC[i].Split(';')[0]));
+                                SelectedEffects selectedEffectCC = new()
+                                {
+                                    Effect = effectCC,
+                                    DamageMin = Convert.ToInt32(splitedEffectsCC[i].Split(';')[1]),
+                                    DamageMax = Convert.ToInt32(splitedEffectsCC[i].Split(';')[2]),
+                                    GlypheColor = Convert.ToInt32(splitedEffectsCC[i].Split(';')[3]),
+                                    SpellDuration = Convert.ToInt32(splitedEffectsCC[i].Split(';')[4]),
+                                    Probability = Convert.ToInt32(splitedEffectsCC[i].Split(';')[5]),
+                                    Zone = CurrentEditedEffect.Zone!.Substring(numbEffect + (2 * i), 2 + numbEffect + (2 * i)),
+                                    DisplayName = effectCC.Name,
+                                    IconPath = effectCC.ImagePath,
+                                    EffectTarget = Convert.ToInt32(CurrentEditedEffect.EffectTarget!.Split(':')[1].Split(';')[i])
+                                };
+                                selectedEffectCC.DisplayName = selectedEffectCC.DisplayName?.Replace("Min", selectedEffectCC.DamageMin.ToString()).Replace("Max", selectedEffectCC.DamageMax.ToString()).Replace("#3", selectedEffectCC.DamageMax.ToString());
+                                SelectedEffectsCC?.Add(selectedEffectCC);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Error", "Terminer l'édition du niveau de sort avant d'éditer un nouveau sort", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
