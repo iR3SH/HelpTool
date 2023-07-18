@@ -6,9 +6,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HelpTool"
         mc:Ignorable="d"
-        Title="HelpTool" Height="400" Width="400" Style="{StaticResource GeneralWindow}" WindowStartupLocation="CenterScreen">
+        Title="HelpTool" Height="700" Width="400" Style="{StaticResource GeneralWindow}" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -64,6 +67,45 @@
                 </Grid.RowDefinitions>
                 <Image Source="/Resources/spell.png" Grid.Column="0" Style="{StaticResource HomeImage}"/>
                 <TextBlock Text="{translator:Loc Spells}" Grid.Column="1" Style="{StaticResource HomeTextBlock}"/>
+            </Grid>
+        </Button>
+        <Button Grid.Row="4" x:Name="ButtonPlayer" Style="{StaticResource HomeButton}" Click="ButtonPlayer_Click">
+            <Grid Height="96" Width="400">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Image Source="/Resources/iop.png" Grid.Column="0" Style="{StaticResource HomeImage}"/>
+                <TextBlock Text="Visualiser Joueurs" Grid.Column="1" Style="{StaticResource HomeTextBlock}"/>
+            </Grid>
+        </Button>
+        <Button Grid.Row="5" x:Name="ButtonEditMonster" Style="{StaticResource HomeButton}" Click="ButtonEditMonster_Click">
+            <Grid Height="96" Width="400">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Image Source="/Resources/monster.png" Grid.Column="0" Style="{StaticResource HomeImage}"/>
+                <TextBlock Text="Editer Monstres" Grid.Column="1" Style="{StaticResource HomeTextBlock}"/>
+            </Grid>
+        </Button>
+        <Button Grid.Row="6" x:Name="ButtonEditSpell" Style="{StaticResource HomeButton}" Click="ButtonEditSpell_Click">
+            <Grid Height="96" Width="400">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Image Source="/Resources/spell.png" Grid.Column="0" Style="{StaticResource HomeImage}"/>
+                <TextBlock Text="Editer Sorts" Grid.Column="1" Style="{StaticResource HomeTextBlock}"/>
             </Grid>
         </Button>
     </Grid>

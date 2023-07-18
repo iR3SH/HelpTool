@@ -70,11 +70,29 @@ namespace HelpTool.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add the Effect.
+        /// </summary>
+        internal static string AddEffect {
+            get {
+                return ResourceManager.GetString("AddEffect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add new MobGrade.
         /// </summary>
         internal static string AddMobGrade {
             get {
                 return ResourceManager.GetString("AddMobGrade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add the Spell Level.
+        /// </summary>
+        internal static string AddSpellLevel {
+            get {
+                return ResourceManager.GetString("AddSpellLevel", resourceCulture);
             }
         }
         
@@ -97,6 +115,24 @@ namespace HelpTool.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Area.
+        /// </summary>
+        internal static string Area {
+            get {
+                return ResourceManager.GetString("Area", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size of the Area.
+        /// </summary>
+        internal static string AreaSize {
+            get {
+                return ResourceManager.GetString("AreaSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Average Price.
         /// </summary>
         internal static string AvgPrice {
@@ -111,6 +147,15 @@ namespace HelpTool.Languages {
         internal static string BuyPrice {
             get {
                 return ResourceManager.GetString("BuyPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chance of Success (in %).
+        /// </summary>
+        internal static string ChanceSuccess {
+            get {
+                return ResourceManager.GetString("ChanceSuccess", resourceCulture);
             }
         }
         
@@ -151,11 +196,56 @@ namespace HelpTool.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create the Spell.
+        /// </summary>
+        internal static string CreateSpell {
+            get {
+                return ResourceManager.GetString("CreateSpell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Critical Fail.
+        /// </summary>
+        internal static string CriticalFail {
+            get {
+                return ResourceManager.GetString("CriticalFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Critical Hit.
+        /// </summary>
+        internal static string CriticalHit {
+            get {
+                return ResourceManager.GetString("CriticalHit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Damages.
         /// </summary>
         internal static string Damage {
             get {
                 return ResourceManager.GetString("Damage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Damages Max.
+        /// </summary>
+        internal static string DamageMax {
+            get {
+                return ResourceManager.GetString("DamageMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Damages Min.
+        /// </summary>
+        internal static string DamageMin {
+            get {
+                return ResourceManager.GetString("DamageMin", resourceCulture);
             }
         }
         
@@ -241,11 +331,65 @@ namespace HelpTool.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Duration of Effect.
+        /// </summary>
+        internal static string DurationEffect {
+            get {
+                return ResourceManager.GetString("DurationEffect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Editable Scope.
+        /// </summary>
+        internal static string EditableScope {
+            get {
+                return ResourceManager.GetString("EditableScope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Effect :.
         /// </summary>
         internal static string Effect {
             get {
                 return ResourceManager.GetString("Effect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Effects.
+        /// </summary>
+        internal static string Effects {
+            get {
+                return ResourceManager.GetString("Effects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Critical Effects.
+        /// </summary>
+        internal static string EffectsCC {
+            get {
+                return ResourceManager.GetString("EffectsCC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target Effect.
+        /// </summary>
+        internal static string EffectTarget {
+            get {
+                return ResourceManager.GetString("EffectTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Empty Cell.
+        /// </summary>
+        internal static string EmptyCell {
+            get {
+                return ResourceManager.GetString("EmptyCell", resourceCulture);
             }
         }
         
@@ -273,6 +417,15 @@ namespace HelpTool.Languages {
         internal static string Error_DbCredConnection {
             get {
                 return ResourceManager.GetString("Error_DbCredConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Critical Fail EndTurn.
+        /// </summary>
+        internal static string FailEndTurn {
+            get {
+                return ResourceManager.GetString("FailEndTurn", resourceCulture);
             }
         }
         
@@ -313,11 +466,29 @@ namespace HelpTool.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Glyph Color.
+        /// </summary>
+        internal static string GlyphColor {
+            get {
+                return ResourceManager.GetString("GlyphColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Id.
         /// </summary>
         internal static string Id {
             get {
                 return ResourceManager.GetString("Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inline Launch.
+        /// </summary>
+        internal static string InlineLaunch {
+            get {
+                return ResourceManager.GetString("InlineLaunch", resourceCulture);
             }
         }
         
@@ -403,11 +574,38 @@ namespace HelpTool.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Launch Per Turn.
+        /// </summary>
+        internal static string LaunchPerTurn {
+            get {
+                return ResourceManager.GetString("LaunchPerTurn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Launch / Turn / Player.
+        /// </summary>
+        internal static string LaunchPerTurnPerPlayer {
+            get {
+                return ResourceManager.GetString("LaunchPerTurnPerPlayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level.
         /// </summary>
         internal static string Level {
             get {
                 return ResourceManager.GetString("Level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line of Sight.
+        /// </summary>
+        internal static string LineSight {
+            get {
+                return ResourceManager.GetString("LineSight", resourceCulture);
             }
         }
         
@@ -466,6 +664,15 @@ namespace HelpTool.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AP to launch the Spell.
+        /// </summary>
+        internal static string PaRequired {
+            get {
+                return ResourceManager.GetString("PaRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pods.
         /// </summary>
         internal static string Pods {
@@ -475,11 +682,47 @@ namespace HelpTool.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scope Max.
+        /// </summary>
+        internal static string PoMax {
+            get {
+                return ResourceManager.GetString("PoMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scope Min.
+        /// </summary>
+        internal static string PoMin {
+            get {
+                return ResourceManager.GetString("PoMin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Price.
         /// </summary>
         internal static string Price {
             get {
                 return ResourceManager.GetString("Price", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Required Level.
+        /// </summary>
+        internal static string RequiredLevel {
+            get {
+                return ResourceManager.GetString("RequiredLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Required State.
+        /// </summary>
+        internal static string RequiredState {
+            get {
+                return ResourceManager.GetString("RequiredState", resourceCulture);
             }
         }
         
@@ -574,11 +817,47 @@ namespace HelpTool.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Time between two launch.
+        /// </summary>
+        internal static string TimeBetweenTwoLaunch {
+            get {
+                return ResourceManager.GetString("TimeBetweenTwoLaunch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type of Spell.
+        /// </summary>
+        internal static string TypeSpell {
+            get {
+                return ResourceManager.GetString("TypeSpell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Up.
         /// </summary>
         internal static string Up {
             get {
                 return ResourceManager.GetString("Up", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update MobGrade.
+        /// </summary>
+        internal static string UpdateMobGrade {
+            get {
+                return ResourceManager.GetString("UpdateMobGrade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Monster.
+        /// </summary>
+        internal static string UpdateMonster {
+            get {
+                return ResourceManager.GetString("UpdateMonster", resourceCulture);
             }
         }
         

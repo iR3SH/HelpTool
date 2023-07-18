@@ -53,8 +53,16 @@
             <ListBox x:Name="LevelListBox" Grid.Row="1" Grid.RowSpan="3" Grid.Column="2" ItemsSource="{Binding Levels, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="SpellEffectLevel">
                 <ListBox.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Editer" Click="EditSpellLevel"/>
-                        <MenuItem Header="{translator:Loc Delete}" Click="DeleteSpellLevel"/>
+                        <MenuItem Header="Editer" Click="EditSpellLevel">
+                            <MenuItem.Icon>
+                                <Image Source="/Resources/edit.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="{translator:Loc Delete}" Click="DeleteSpellLevel">
+                            <MenuItem.Icon>
+                                <Image Source="/Resources/delete.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </ContextMenu>
                 </ListBox.ContextMenu>
             </ListBox>
@@ -92,7 +100,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Content="Effets" Grid.Row="0" Grid.Column="0"/>
+            <Label Content="{translator:Loc Effects}" Grid.Row="0" Grid.Column="0"/>
             <ComboBox x:Name="EffectsComboBox" ItemsSource="{Binding Effects, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" SelectionChanged="EffectsComboBox_SelectionChanged">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -114,19 +122,19 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Label Content="Dommages Min" x:Name="DoMinLabel" Grid.Row="2"/>
+            <Label Content="{translator:Loc DamageMin}" x:Name="DoMinLabel" Grid.Row="2"/>
             <TextBox x:Name="DamageMin" Grid.Row="3" Grid.Column="0" Text="-1" PreviewTextInput="CheckIntValue"/>
-            <Label Content="Dommages Max" x:Name="DoMaxLabel" Grid.Row="2" Grid.Column="1"/>
+            <Label Content="{translator:Loc DamageMax}" x:Name="DoMaxLabel" Grid.Row="2" Grid.Column="1"/>
             <TextBox x:Name="DamageMax" Grid.Row="3" Grid.Column="1" Text="-1" PreviewTextInput="CheckIntValue"/>
-            <Label Content="EffectTarget" Grid.Row="4" Grid.Column="0"/>
+            <Label Content="{translator:Loc EffectTarget}" Grid.Row="4" Grid.Column="0"/>
             <ComboBox x:Name="EffectTargetComboBox" Grid.Row="5" Grid.Column="0" ItemsSource="{Binding EffectsTargets, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectedIndex="0"/>
-            <Label x:Name="GlypheColorLabel" Content="Couleur de la Glyphe" Grid.Row="4" Grid.Column="1" Visibility="Hidden"/>
+            <Label x:Name="GlypheColorLabel" Content="{translator:Loc GlyphColor}" Grid.Row="4" Grid.Column="1" Visibility="Hidden"/>
             <ComboBox x:Name="GlypheColorComboBox" Grid.Row="5" Grid.Column="1" ItemsSource="{Binding Colors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" Visibility="Hidden" SelectedIndex="0"/>
-            <Label Content="Durée de l'effet" Grid.Row="6" Grid.Column="0"/>
+            <Label Content="{translator:Loc DurationEffect}" Grid.Row="6" Grid.Column="0"/>
             <TextBox x:Name="DureeEffectTextBox" Grid.Row="7" Grid.Column="0" Text="0" PreviewTextInput="CheckIntValue"/>
-            <Label Content="Chance de Réussite (en %)" Grid.Row="6" Grid.Column="1"/>
+            <Label Content="{translator:Loc ChanceSuccess}" Grid.Row="6" Grid.Column="1"/>
             <TextBox x:Name="ReuEffectTextBox" Grid.Row="7" Grid.Column="1" Text="0" PreviewTextInput="CheckIntValue"/>
-            <Label Content="Zone" Grid.Row="8" Grid.Column="0"/>
+            <Label Content="{translator:Loc Area}" Grid.Row="8" Grid.Column="0"/>
             <ComboBox Name="ZoneComboBox" Grid.Row="9" Grid.Column="0" ItemsSource="{Binding Zones, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="0" SelectionChanged="ZoneComboBox_SelectionChanged">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -141,9 +149,9 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Label Content="Taille de la Zone" Grid.Row="8" Grid.Column="1"/>
+            <Label Content="{translator:Loc AreaSize}" Grid.Row="8" Grid.Column="1"/>
             <TextBox x:Name="ZoneSizeTextBox" Grid.Row="9" Grid.Column="1" Text="0" PreviewTextInput="CheckIntValue"/>
-            <Button x:Name="AddEffect" Content="Ajouter l'Effet" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Click="AddEffect_Click"/>
+            <Button x:Name="AddEffect" Content="{translator:Loc AddEffect}" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Click="AddEffect_Click"/>
             <ListBox x:Name="SelectedEffectListBox" ItemsSource="{Binding SelectedEffects, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="10" Grid.RowSpan="7" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,34,90,0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -159,17 +167,31 @@
                 </ListBox.ItemTemplate>
                 <ListBox.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="{translator:Loc Delete}" Click="DeleteSelectedEffect"/>
+                        <MenuItem Header="Up" Click="UpSpellEffect">
+                            <MenuItem.Icon>
+                                <Image Source="/Resources/up.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Down" Click="DownSpellEffect">
+                            <MenuItem.Icon>
+                                <Image Source="/Resources/down.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="{translator:Loc Delete}" Click="DeleteSelectedEffect">
+                            <MenuItem.Icon>
+                                <Image Source="/Resources/delete.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </ContextMenu>
                 </ListBox.ContextMenu>
             </ListBox>
 
-            <Label Content="Level Requis" Grid.Row="2" Grid.Column="2"/>
+            <Label Content="{translator:Loc RequiredLevel}" Grid.Row="2" Grid.Column="2"/>
             <TextBox x:Name="RequiredLevelTextBox" Grid.Row="3" Grid.Column="2" Text="1" PreviewTextInput="CheckIntValue"/>
-            <Label Content="Etat" Grid.Row="4" Grid.Column="2"/>
+            <Label Content="{translator:Loc RequiredState}" Grid.Row="4" Grid.Column="2"/>
             <ComboBox x:Name="StateComboBox" Grid.Row="5" Grid.Column="2" ItemsSource="{Binding States, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectedIndex="0"/>
 
-            <Label Content="Effets CC" Grid.Row="0" Grid.Column="3"/>
+            <Label Content="{translator:Loc EffectsCC}" Grid.Row="0" Grid.Column="3"/>
             <ComboBox x:Name="EffectsCCComboBox" ItemsSource="{Binding EffectsCC, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" SelectedIndex="0" SelectionChanged="EffectsCCComboBox_SelectionChanged">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -191,19 +213,19 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Label Content="Dommages Min" x:Name="DoMinCCLabel" Grid.Row="2" Grid.Column="3"/>
+            <Label Content="{translator:Loc DamageMin}" x:Name="DoMinCCLabel" Grid.Row="2" Grid.Column="3"/>
             <TextBox x:Name="DamageMinCC" Grid.Row="3" Grid.Column="3" Text="-1" PreviewTextInput="CheckIntValue"/>
-            <Label Content="Dommages Max" x:Name="DoMaxCCLabel" Grid.Row="2" Grid.Column="4"/>
+            <Label Content="{translator:Loc DamageMax}" x:Name="DoMaxCCLabel" Grid.Row="2" Grid.Column="4"/>
             <TextBox x:Name="DamageMaxCC" Grid.Row="3" Grid.Column="4" Text="-1" PreviewTextInput="CheckIntValue"/>
-            <Label Content="EffectTarget" Grid.Row="4" Grid.Column="3"/>
+            <Label Content="{translator:Loc EffectTarget}" Grid.Row="4" Grid.Column="3"/>
             <ComboBox x:Name="EffectTargetCCComboBox" Grid.Row="5" Grid.Column="3" ItemsSource="{Binding EffectsTargets, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectedIndex="0"/>
-            <Label x:Name="GlypheColorCCLabel" Content="Couleur de la Glyphe" Grid.Row="4" Grid.Column="4" Visibility="Hidden"/>
+            <Label x:Name="GlypheColorCCLabel" Content="{translator:Loc GlyphColor}" Grid.Row="4" Grid.Column="4" Visibility="Hidden"/>
             <ComboBox x:Name="GlypheColorCCComboBox" Grid.Row="5" Grid.Column="4" ItemsSource="{Binding Colors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" Visibility="Hidden" SelectedIndex="0"/>
-            <Label Content="Durée de l'effet" Grid.Row="6" Grid.Column="3"/>
+            <Label Content="{translator:Loc DurationEffect}" Grid.Row="6" Grid.Column="3"/>
             <TextBox x:Name="DureeEffectCCTextBox" Grid.Row="7" Grid.Column="3" Text="0" PreviewTextInput="CheckIntValue"/>
-            <Label Content="Chance de Réussite (en %)" Grid.Row="6" Grid.Column="4"/>
+            <Label Content="{translator:Loc ChanceSuccess}" Grid.Row="6" Grid.Column="4"/>
             <TextBox x:Name="ReuEffectCCTextBox" Grid.Row="7" Grid.Column="4" Text="0" PreviewTextInput="CheckIntValue"/>
-            <Label Content="Zone" Grid.Row="8" Grid.Column="3"/>
+            <Label Content="{translator:Loc Area}" Grid.Row="8" Grid.Column="3"/>
             <ComboBox Name="ZoneCCComboBox" Grid.Row="9" Grid.Column="3" ItemsSource="{Binding Zones, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="0" SelectionChanged="ZoneCCComboBox_SelectionChanged">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -218,9 +240,9 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Label Content="Taille de la Zone" Grid.Row="8" Grid.Column="4"/>
+            <Label Content="{translator:Loc AreaSize}" Grid.Row="8" Grid.Column="4"/>
             <TextBox x:Name="ZoneSizeCCTextBox" Grid.Row="9" Grid.Column="4" Text="0" PreviewTextInput="CheckIntValue"/>
-            <Button x:Name="AddEffectCC" Content="Ajouter l'Effet" Grid.Row="10" Grid.Column="3" Grid.ColumnSpan="2" Click="AddEffectCC_Click"/>
+            <Button x:Name="AddEffectCC" Content="{translator:Loc AddEffect}" Grid.Row="10" Grid.Column="3" Grid.ColumnSpan="2" Click="AddEffectCC_Click"/>
             <ListBox x:Name="SelectedEffectCCListBox" ItemsSource="{Binding SelectedEffectsCC, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="10" Grid.RowSpan="7" Grid.Column="2" Grid.ColumnSpan="3" Margin="90,34,0,0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -236,7 +258,22 @@
                 </ListBox.ItemTemplate>
                 <ListBox.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="{translator:Loc Delete}" Click="DeleteSelectedEffectCC"/>
+                        <MenuItem Header="Up" Click="UpSpellEffectCC">
+                            <MenuItem.Icon>
+                                <Image Source="/Resources/up.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                        <MenuItem Header="Down" Click="DownSpellEffectCC">
+                            <MenuItem.Icon>
+                                <Image Source="/Resources/down.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="{translator:Loc Delete}" Click="DeleteSelectedEffectCC">
+                            <MenuItem.Icon>
+                                <Image Source="/Resources/delete.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </ContextMenu>
                 </ListBox.ContextMenu>
             </ListBox>
@@ -247,7 +284,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Image Source="/Resources/Icons/pa.png" Grid.Column="0" Height="20" Width="20"/>
-                <Label Content="Pa pour lancer le sort" Grid.Column="1" VerticalAlignment="Center"/>
+                <Label Content="{translator:Loc PaRequired}" Grid.Column="1" VerticalAlignment="Center"/>
             </Grid>
             <TextBox x:Name="PaTextbox" Grid.Row="18" Grid.Column="0" Text="1" PreviewTextInput="CheckIntValue"/>
 
@@ -257,7 +294,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Image Source="/Resources/Icons/po.png" Grid.Column="0" Height="20" Width="20"/>
-                <Label Content="Po Min" Grid.Column="1" VerticalAlignment="Center"/>
+                <Label Content="{translator:Loc PoMin}" Grid.Column="1" VerticalAlignment="Center"/>
             </Grid>
             <TextBox x:Name="PoMinTextBox" Grid.Row="18" Grid.Column="1" Text="0" PreviewTextInput="CheckIntValue"/>
             <Grid Grid.Row="17" Grid.Column="2">
@@ -266,7 +303,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Image Source="/Resources/Icons/po.png" Grid.Column="0" Height="20" Width="20"/>
-                <Label Content="Po Max" Grid.Column="1" VerticalAlignment="Center"/>
+                <Label Content="{translator:Loc PoMax}" Grid.Column="1" VerticalAlignment="Center"/>
             </Grid>
             <TextBox x:Name="PoMaxTextBox" Grid.Row="18" Grid.Column="2" Text="0" PreviewTextInput="CheckIntValue"/>
             <Grid Grid.Row="17" Grid.Column="3">
@@ -275,7 +312,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Image Source="/Resources/Icons/crit.png" Grid.Column="0" Height="20" Width="20"/>
-                <Label Content="Coup Critique" Grid.Column="1" VerticalAlignment="Center"/>
+                <Label Content="{translator:Loc CriticalHit}" Grid.Column="1" VerticalAlignment="Center"/>
             </Grid>
             <TextBox x:Name="CCTextBox" Grid.Row="18" Grid.Column="3" Text="0" PreviewTextInput="CheckIntValue"/>
             <Grid Grid.Row="17" Grid.Column="4">
@@ -284,26 +321,27 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Image Source="/Resources/Icons/crit.png" Grid.Column="0" Height="20" Width="20"/>
-                <Label Content="Echec Critique" Grid.Column="1" VerticalAlignment="Center"/>
+                <Label Content="{translator:Loc CriticalFail}" Grid.Column="1" VerticalAlignment="Center"/>
             </Grid>
             <TextBox x:Name="ECTextBox" Grid.Row="18" Grid.Column="4" Text="0" PreviewTextInput="CheckIntValue"/>
 
-            <CheckBox x:Name="InlineLaunch" Content="Lancer en ligne" IsChecked="False" Grid.Row="19" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-            <CheckBox x:Name="LDV" Content="Ligne de vue" IsChecked="False" Grid.Row="19" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-            <CheckBox x:Name="EmptyCell" Content="Cellule vide" IsChecked="False" Grid.Row="19" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-            <CheckBox x:Name="PoModifiable" Content="Portée Modifiable" IsChecked="False" Grid.Row="19" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-            <CheckBox x:Name="EcFinishTurn" Content="EC fini le tour" IsChecked="False" Grid.Row="19" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-            
-            <Label Content="Type de Sort" Grid.Row="20" Grid.Column="0"/>
-            <ComboBox x:Name="SpellType" Grid.Row="21" Grid.Column="0" ItemsSource="{Binding SpellTypes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectedIndex="0"/>
-            <Label Content="Lancer par tour" Grid.Row="20" Grid.Column="1"/>
-            <TextBox x:Name="LaunchPerTurn" Grid.Row="21" Grid.Column="1" Text="0" PreviewTextInput="CheckIntValue"/>
-            <Label Content="Lancer / Tour / Joueur" Grid.Row="20" Grid.Column="2"/>
-            <TextBox x:Name="LaunchPerTurnPerPlayer" Grid.Row="21" Grid.Column="2" Text="0" PreviewTextInput="CheckIntValue"/>
-            <Label Content="Temps entre deux lancers" Grid.Row="20" Grid.Column="3"/>
-            <TextBox x:Name="TurnBetweenTwoLaunch" Grid.Row="21" Grid.Column="3" Text="0" PreviewTextInput="CheckIntValue"/>
+            <CheckBox x:Name="InlineLaunch" Content="{translator:Loc InlineLaunch}" IsChecked="False" Grid.Row="19" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <CheckBox x:Name="LDV" Content="{translator:Loc LineSight}" IsChecked="False" Grid.Row="19" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <CheckBox x:Name="EmptyCell" Content="{translator:Loc EmptyCell}" IsChecked="False" Grid.Row="19" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <CheckBox x:Name="PoModifiable" Content="{translator:Loc EditableScope}" IsChecked="False" Grid.Row="19" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <CheckBox x:Name="EcFinishTurn" Content="{translator:Loc FailEndTurn}" IsChecked="False" Grid.Row="19" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
-            <Button x:Name="AddNewSpellLevelButton" Content="Ajouter un niveau de Sort" Grid.Row="22" Grid.ColumnSpan="5" Click="AddNewSpellLevelButton_Click"/>
+            <Label Content="{translator:Loc TypeSpell}" Grid.Row="20" Grid.Column="0"/>
+            <ComboBox x:Name="SpellType" Grid.Row="21" Grid.Column="0" ItemsSource="{Binding SpellTypes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectedIndex="0"/>
+            <Label Content="{translator:Loc LaunchPerTurn}" Grid.Row="20" Grid.Column="1"/>
+            <TextBox x:Name="LaunchPerTurn" Grid.Row="21" Grid.Column="1" Text="0" PreviewTextInput="CheckIntValue"/>
+            <Label Content="{translator:Loc LaunchPerTurnPerPlayer}" Grid.Row="20" Grid.Column="2"/>
+            <TextBox x:Name="LaunchPerTurnPerPlayer" Grid.Row="21" Grid.Column="2" Text="0" PreviewTextInput="CheckIntValue"/>
+            <Label Content="{translator:Loc TimeBetweenTwoLaunch}" Grid.Row="20" Grid.Column="3"/>
+            <TextBox x:Name="TurnBetweenTwoLaunch" Grid.Row="21" Grid.Column="3" Text="0" PreviewTextInput="CheckIntValue"/>
+            <Label Content="Edition du Sort 1 en cours" Grid.Row="20" Grid.RowSpan="2" Grid.Column="4" x:Name="EditLabel" FontStyle="Oblique" Background="Orange" Visibility="Hidden"/>
+
+            <Button x:Name="AddNewSpellLevelButton" Content="{translator:Loc AddSpellLevel}" Grid.Row="22" Grid.ColumnSpan="5" Click="AddNewSpellLevelButton_Click"/>
         </Grid>
         <Grid Grid.Row="3">
             <Grid.RowDefinitions>
@@ -315,7 +353,7 @@
             </Grid.RowDefinitions>
             <Label Content="Description" Grid.Row="0"/>
             <TextBox x:Name="DescriptionTextBox" Grid.Row="1"/>
-            <Button x:Name="GenerateSpellButton" Content="Créer le Sort" Grid.Row="2" Click="GenerateSpellButton_Click"/>
+            <Button x:Name="GenerateSpellButton" Content="{translator:Loc CreateSpell}" Grid.Row="2" Click="GenerateSpellButton_Click"/>
             <TextBox x:Name="SWFTextBox" Grid.Row="3" Grid.RowSpan="2" IsReadOnly="True"/>
         </Grid>
     </Grid>

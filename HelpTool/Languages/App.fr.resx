@@ -277,4 +277,97 @@
   <data name="CreateMonster" xml:space="preserve">
     <value>Créer le Monstre</value>
   </data>
+  <data name="Effects" xml:space="preserve">
+    <value>Effets</value>
+  </data>
+  <data name="EffectsCC" xml:space="preserve">
+    <value>Effets CC</value>
+  </data>
+  <data name="DamageMin" xml:space="preserve">
+    <value>Dommages Min</value>
+  </data>
+  <data name="DamageMax" xml:space="preserve">
+    <value>Dommages Max</value>
+  </data>
+  <data name="EffectTarget" xml:space="preserve">
+    <value>Type de Cible</value>
+  </data>
+  <data name="GlyphColor" xml:space="preserve">
+    <value>Couleur de la Glyphe</value>
+  </data>
+  <data name="DurationEffect" xml:space="preserve">
+    <value>Durée de l'Effet</value>
+  </data>
+  <data name="ChanceSuccess" xml:space="preserve">
+    <value>Chance de Réussite (en %)</value>
+  </data>
+  <data name="Area" xml:space="preserve">
+    <value>Zone</value>
+  </data>
+  <data name="AreaSize" xml:space="preserve">
+    <value>Taille de la Zone</value>
+  </data>
+  <data name="AddEffect" xml:space="preserve">
+    <value>Ajouter l'Effect</value>
+  </data>
+  <data name="RequiredLevel" xml:space="preserve">
+    <value>Level Requis</value>
+  </data>
+  <data name="RequiredState" xml:space="preserve">
+    <value>Etat Requis</value>
+  </data>
+  <data name="PaRequired" xml:space="preserve">
+    <value>Pa pour lancer le sort</value>
+  </data>
+  <data name="PoMin" xml:space="preserve">
+    <value>Portée Min</value>
+  </data>
+  <data name="PoMax" xml:space="preserve">
+    <value>Portée Max</value>
+  </data>
+  <data name="CriticalHit" xml:space="preserve">
+    <value>Coup Critique</value>
+  </data>
+  <data name="CriticalFail" xml:space="preserve">
+    <value>Echec Critique</value>
+  </data>
+  <data name="InlineLaunch" xml:space="preserve">
+    <value>Lancer en ligne</value>
+  </data>
+  <data name="LineSight" xml:space="preserve">
+    <value>Ligne de Vue</value>
+  </data>
+  <data name="EmptyCell" xml:space="preserve">
+    <value>Cellule vide</value>
+  </data>
+  <data name="EditableScope" xml:space="preserve">
+    <value>Portée Modifiable</value>
+  </data>
+  <data name="FailEndTurn" xml:space="preserve">
+    <value>EC fini le tour</value>
+  </data>
+  <data name="TypeSpell" xml:space="preserve">
+    <value>Type de Sort</value>
+  </data>
+  <data name="LaunchPerTurn" xml:space="preserve">
+    <value>Lancer par tour</value>
+  </data>
+  <data name="LaunchPerTurnPerPlayer" xml:space="preserve">
+    <value>Lancer / Tour / Joueur</value>
+  </data>
+  <data name="TimeBetweenTwoLaunch" xml:space="preserve">
+    <value>Temps entre deux lancers</value>
+  </data>
+  <data name="AddSpellLevel" xml:space="preserve">
+    <value>Ajouter un niveau de Sort</value>
+  </data>
+  <data name="CreateSpell" xml:space="preserve">
+    <value>Créer le Sort</value>
+  </data>
+  <data name="UpdateMonster" xml:space="preserve">
+    <value>Mettre à jour le Monstre</value>
+  </data>
+  <data name="UpdateMobGrade" xml:space="preserve">
+    <value>Mettre à jour le Grâde</value>
+  </data>
 </root>

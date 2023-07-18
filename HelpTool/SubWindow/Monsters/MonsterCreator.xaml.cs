@@ -3,11 +3,9 @@ using HelpData.Classes.Monsters;
 using HelpTool.Classes;
 using HelpTool.Languages;
 using HelpTool.SubWindow.Monsters;
-using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -34,12 +32,76 @@ namespace HelpTool.SubWindow.Items
         public List<MobGrade>? MobGrades { get { return _MobGrades; } set { _MobGrades = value; NotifyPropertyChanged(); } }
         private List<int>? SpellsLevels { get; set; }
         private MobGrade? SelectedMobGrade { get; set; }
+        private HelpData.Classes.Game.Monsters? EditedMonster { get; set; }
         public MonsterCreator()
         {
             InitializeComponent();
             DataContext = this;
             MobGrades = new();
             ResetMobGradesEntry();
+        }
+        public MonsterCreator(HelpData.Classes.Game.Monsters monster)
+        {
+            InitializeComponent();
+            DataContext = this;
+            EditedMonster = monster;
+            InitEditingData();
+        }
+
+        private async void InitEditingData()
+        {
+            if (EditedMonster != null)
+            {
+                MobGrades = await Functions.InitMobGrades(EditedMonster);
+                IdTextBox.Text = EditedMonster.Id.ToString();
+                NameTextBox.Text = EditedMonster.Name;
+                GfxIdTextBox.Text = EditedMonster.GfxID.ToString();
+                ColorTextBox.Text = EditedMonster.Colors;
+                MinKamasTextBox.Text = EditedMonster.MinKamas.ToString();
+                MaxKamasTextBox.Text = EditedMonster.MaxKamas.ToString();
+                IATypeTextBox.Text = EditedMonster.AI_Type.ToString();
+                AlignComboBox.SelectedIndex = EditedMonster.Align switch
+                {
+                    -1 => 0,
+                    _ => EditedMonster.Align,
+                };
+                CapturableCheckBox.IsChecked = EditedMonster.Capturable;
+                DistAggroTextbox.Text = EditedMonster.AggroDistance.ToString();
+                MessageBoxResult dialogResult = MessageBox.Show("Le monstre est-il un boss ?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if(dialogResult == MessageBoxResult.Yes)
+                {
+                    IsBossCheckBox.IsChecked = true;
+                }
+                else
+                {
+                    IsBossCheckBox.IsChecked = false;
+                }
+                MessageBoxResult dialogResult2 = MessageBox.Show("Le monstre est-il invocable ?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (dialogResult2 == MessageBoxResult.Yes)
+                {
+                    IsInvocable.IsChecked = true;
+                }
+                else
+                {
+                    IsInvocable.IsChecked = false;
+                }
+                switch(EditedMonster.Type)
+                {
+                    case 0:
+                        TypeComboBox.SelectedIndex = 0;
+                        break;
+                    case 2:
+                        TypeComboBox.SelectedIndex = 1;
+                        break;
+                    case 3:
+                        TypeComboBox.SelectedIndex = 2;
+                        break;
+                    default:
+                        TypeComboBox.Items.Add(new ComboBoxItem() { Tag = EditedMonster.Type, Content = "Custom" });
+                        break;
+                }
+                CreateButton.Content = Functions.Word("UpdateMonster");
+            }
         }
 
         private void AddSpellClick(object sender, RoutedEventArgs e)
@@ -113,6 +175,30 @@ namespace HelpTool.SubWindow.Items
                 if (SelectedMobGrade != null)
                 {
                     mobGrade = SelectedMobGrade;
+                    mobGrade.Level = Convert.ToInt32(LevelTextBox.Text);
+                    mobGrade.Pa = Convert.ToInt32(PaTextBox.Text);
+                    mobGrade.Pm = Convert.ToInt32(PmTextBox.Text);
+                    mobGrade.Initiative = Convert.ToInt32(IniTextBox.Text);
+                    mobGrade.Vitalite = Convert.ToInt32(VitaTextBox.Text);
+                    mobGrade.Sagesse = Convert.ToInt32(SageTextBox.Text);
+                    mobGrade.Force = Convert.ToInt32(ForceTextBox.Text);
+                    mobGrade.Intelligence = Convert.ToInt32(IntelTextBox.Text);
+                    mobGrade.Chance = Convert.ToInt32(ChanceTextBox.Text);
+                    mobGrade.Agilite = Convert.ToInt32(AgiTextBox.Text);
+                    mobGrade.Dommages = Convert.ToInt32(DomTextBox.Text);
+                    mobGrade.DommagesPer = Convert.ToInt32(DomPerTextBox.Text);
+                    mobGrade.Soins = Convert.ToInt32(HealTextBox.Text);
+                    mobGrade.Creatures = Convert.ToInt32(CreaTextBox.Text);
+                    mobGrade.ResNeutre = Convert.ToInt32(ReNeuTextBox.Text);
+                    mobGrade.ResTerre = Convert.ToInt32(ReTerreTextBox.Text);
+                    mobGrade.ResFeu = Convert.ToInt32(ReFeuTextBox.Text);
+                    mobGrade.ResEau = Convert.ToInt32(ReEauTextBox.Text);
+                    mobGrade.ResAir = Convert.ToInt32(ReAirTextBox.Text);
+                    mobGrade.EsqPa = Convert.ToInt32(EsqPaTextBox.Text);
+                    mobGrade.EsqPm = Convert.ToInt32(EsqPmTextBox.Text);
+                    mobGrade.Experience = Convert.ToInt32(ExpTextBox.Text);
+                    mobGrade.Sorts = Spells;
+                    mobGrade.SortsLevels = SpellsLevels;
                 }
                 else
                 {
@@ -142,7 +228,7 @@ namespace HelpTool.SubWindow.Items
                         EsqPm = Convert.ToInt32(EsqPmTextBox.Text),
                         Experience = Convert.ToInt32(ExpTextBox.Text),
                         Sorts = Spells,
-                        SortsLevels = SpellsLevels,
+                        SortsLevels = SpellsLevels
                     };
                 }
                 if (!MobGrades!.Contains(mobGrade))
@@ -162,6 +248,7 @@ namespace HelpTool.SubWindow.Items
                 {
                     SelectedMobGrade = null;
                     SelectedMobGradeLabel.Content = "";
+                    AddMobGradeButton.Content = Functions.Word("AddMobGrade");
                 }
                 ResetMobGradesEntry();
             }
@@ -232,6 +319,7 @@ namespace HelpTool.SubWindow.Items
                     SpellsLevels = Grade.SortsLevels;
                     SelectedMobGrade = Grade;
                     SelectedMobGradeLabel.Content = "Grade " + Grade.Grade.ToString() + " sélectionné";
+                    AddMobGradeButton.Content = Functions.Word("UpdateMobGrade");
                 }
             }
         }
@@ -242,6 +330,7 @@ namespace HelpTool.SubWindow.Items
             {
                 SelectedMobGrade = null;
                 SelectedMobGradeLabel.Content = "";
+                AddMobGradeButton.Content = Functions.Word("AddMobGrade");
             }
         }
         private void DeleteMobGrade(object sender, RoutedEventArgs e)
@@ -279,6 +368,7 @@ namespace HelpTool.SubWindow.Items
                 !string.IsNullOrEmpty(DistAggroTextbox.Text)
                 )
             {
+                
                 List<string> MobGradeDetails = Functions.ParseMobGradesInfos(MobGrades);
                 bool? isBoss = IsBossCheckBox.IsChecked;
                 if(isBoss == null)
@@ -296,29 +386,59 @@ namespace HelpTool.SubWindow.Items
                 {
                     CanSummon = false;
                 }
-                HelpData.Classes.Game.Monsters monster = new()
+                HelpData.Classes.Game.Monsters? monster;
+                if (EditedMonster == null)
                 {
-                    Id = Convert.ToInt32(IdTextBox.Text),
-                    Name = NameTextBox.Text,
-                    GfxID = Convert.ToInt32(GfxIdTextBox.Text),
-                    Align = Convert.ToInt32(AlignComboBox.SelectedItem as string),
-                    Colors = ColorTextBox.Text,
-                    MinKamas = Convert.ToInt32(MinKamasTextBox.Text),
-                    MaxKamas = Convert.ToInt32(MaxKamasTextBox.Text),
-                    AI_Type = Convert.ToInt32(IATypeTextBox.Text),
-                    AggroDistance = Convert.ToInt32(DistAggroTextbox.Text),
-                    Type = Convert.ToInt32(TypeComboBox.SelectedItem as string),
-                    Grades = MobGradeDetails[0],
-                    Stats = MobGradeDetails[1],
-                    StatsInfos = MobGradeDetails[2],
-                    Spells = MobGradeDetails[3],
-                    Points = MobGradeDetails[4],
-                    Pdvs = MobGradeDetails[5],
-                    Inits = MobGradeDetails[6],
-                    Exps = MobGradeDetails[7],
-                    Capturable = (bool)isCapturable
-                };
-                await SharedObjects.MonstersRepository!.Create(monster);
+                    monster = new()
+                    {
+                        Id = Convert.ToInt32(IdTextBox.Text),
+                        Name = NameTextBox.Text,
+                        GfxID = Convert.ToInt32(GfxIdTextBox.Text),
+                        Align = Convert.ToInt32(AlignComboBox.SelectedItem as string),
+                        Colors = ColorTextBox.Text,
+                        MinKamas = Convert.ToInt32(MinKamasTextBox.Text),
+                        MaxKamas = Convert.ToInt32(MaxKamasTextBox.Text),
+                        AI_Type = Convert.ToInt32(IATypeTextBox.Text),
+                        AggroDistance = Convert.ToInt32(DistAggroTextbox.Text),
+                        Type = Convert.ToInt32(TypeComboBox.SelectedItem as string),
+                        Grades = MobGradeDetails[0],
+                        Stats = MobGradeDetails[1],
+                        StatsInfos = MobGradeDetails[2],
+                        Spells = MobGradeDetails[3],
+                        Points = MobGradeDetails[4],
+                        Pdvs = MobGradeDetails[5],
+                        Inits = MobGradeDetails[6],
+                        Exps = MobGradeDetails[7],
+                        Capturable = (bool)isCapturable
+                    };
+                    await SharedObjects.MonstersRepository!.Create(monster);
+                }
+                else
+                {
+                    monster = EditedMonster;
+                    monster.Id = Convert.ToInt32(IdTextBox.Text);
+                    monster.Name = NameTextBox.Text;
+                    monster.GfxID = Convert.ToInt32(GfxIdTextBox.Text);
+                    monster.Align = Convert.ToInt32(AlignComboBox.SelectedItem as string);
+                    monster.Colors = ColorTextBox.Text;
+                    monster.MinKamas = Convert.ToInt32(MinKamasTextBox.Text);
+                    monster.MaxKamas = Convert.ToInt32(MaxKamasTextBox.Text);
+                    monster.AI_Type = Convert.ToInt32(IATypeTextBox.Text);
+                    monster.AggroDistance = Convert.ToInt32(DistAggroTextbox.Text);
+                    monster.Type = Convert.ToInt32(TypeComboBox.SelectedItem as string);
+                    monster.Grades = MobGradeDetails[0];
+                    monster.Stats = MobGradeDetails[1];
+                    monster.StatsInfos = MobGradeDetails[2];
+                    monster.Spells = MobGradeDetails[3];
+                    monster.Points = MobGradeDetails[4];
+                    monster.Pdvs = MobGradeDetails[5];
+                    monster.Inits = MobGradeDetails[6];
+                    monster.Exps = MobGradeDetails[7];
+                    monster.Capturable = (bool)isCapturable;
+
+                    await SharedObjects.MonstersRepository!.Update(monster);
+
+                }
                 StringBuilder stringBuilder = new();
                 stringBuilder.Append("M[")
                     .Append(monster.Id)

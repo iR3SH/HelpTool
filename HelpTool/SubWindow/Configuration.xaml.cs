@@ -21,6 +21,7 @@ namespace HelpTool.SubWindow
             {
                 SharedObjects.DbHost = Host.Text;
                 SharedObjects.DbName = DbName.Text;
+                SharedObjects.DbNameLogin = DbNameLogin.Text;
                 SharedObjects.DbUser = DbUser.Text;
                 SharedObjects.DbPass = DbPassword.Password;
                 SharedObjects.Context!.Database.SetConnectionString("Server=" + SharedObjects.DbHost + "; Database=" + SharedObjects.DbName + "; Uid=" + SharedObjects.DbUser + "; Pwd=" + SharedObjects.DbPass);

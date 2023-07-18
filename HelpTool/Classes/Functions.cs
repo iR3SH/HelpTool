@@ -11,6 +11,11 @@ using System.Net.NetworkInformation;
 using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Web;
+using System.Windows.Documents;
+using System.Windows.Media.Effects;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HelpTool.Classes
 {
@@ -3917,6 +3922,362 @@ namespace HelpTool.Classes
                 }
             };
             return effectsTargets;
+        }
+        public static bool IsEquipement(Objects objects)
+        {
+            if (objects.ItemTemplate != null)
+            {
+                return objects.ItemTemplate.Type switch
+                {
+                    1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9 or 10 or 11 or 16 or 17 or 18 or 19 or 20 or 21 or 22 or 23 or 81 or 82 or 91 or 97 or 99 or 113 or 114 => true,
+                    _ => false,
+                };
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool IsConsumable(Objects objects)
+        {
+            if (objects.ItemTemplate != null)
+            {
+                return objects.ItemTemplate.Type switch
+                {
+                    12 or 13 or 14 or 25 or 27 or 49 or 69 or 73 or 74 or 75 or 76 or 77 or 79 or 84 or 89 or 93 or 94 or 100 or 112 or 116 => true,
+                    _ => false,
+                };
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool IsRunes(Objects objects)
+        {
+            if (objects.ItemTemplate != null)
+            {
+                return objects.ItemTemplate.Type switch
+                {
+                    78 => true,
+                    _ => false,
+                };
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool IsCapture(Objects objects)
+        {
+            if (objects.ItemTemplate != null)
+            {
+                return objects.ItemTemplate.Type switch
+                {
+                    83 or 85 or 124 or 125 => true,
+                    _ => false,
+                };
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool IsQuestItem(Objects objects)
+        {
+            if (objects.ItemTemplate != null)
+            {
+                return objects.ItemTemplate.Type switch
+                {
+                    24 or 28 or 29 or 31 or 32 or 80 => true,
+                    _ => false,
+                };
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool IsRessources(Objects objects) { 
+            return !IsEquipement(objects) && !IsConsumable(objects) && !IsRunes(objects) && !IsCapture(objects) && !IsQuestItem(objects) ;
+        }
+
+        public static List<DisplayEffects>? ParseObjectEffects(Objects coiffe)
+        {
+            List<DisplayEffects> effects = new();
+            List<ItemEffect> itemEffects = GenerateAllEffect();
+            if (!string.IsNullOrEmpty(coiffe.Stats))
+            {
+                foreach (string effect in coiffe.Stats.Split(','))
+                {
+                    string[] effectDetails = effect.Split("#");
+                    ItemEffect? itemEffect = itemEffects.Where(c => c.AddHexId!.Equals(effectDetails[0])).FirstOrDefault();
+                    if(itemEffect == null) 
+                    {
+                        itemEffect = itemEffects.Where(c => !string.IsNullOrEmpty(c.RemHexId) && c.RemHexId.Equals(effectDetails[0])).FirstOrDefault();
+                    }
+                    if(itemEffect != null)
+                    {
+                        int val1 = Convert.ToInt32(effectDetails[1], 16);
+                        string signe = GetStatsSign(effectDetails[0]);
+                        DisplayEffects displayEffects = new()
+                        {
+                            Effect = itemEffect,
+                            Text = signe + " " + val1 + " " + itemEffect.Name
+                        };
+                        effects.Add(displayEffects);
+                    }
+                }
+            }
+            return effects;
+        }
+
+        public static async Task<List<MobGrade>?> InitMobGrades(Monsters monster)
+        {
+            List<MobGrade> Mobgrades = new();
+            if (!string.IsNullOrEmpty(monster.Grades) && !string.IsNullOrEmpty(monster.Stats) && !string.IsNullOrEmpty(monster.StatsInfos)
+                && !string.IsNullOrEmpty(monster.Spells) && !string.IsNullOrEmpty(monster.Pdvs) && !string.IsNullOrEmpty(monster.Points) && !string.IsNullOrEmpty(monster.Inits) && !string.IsNullOrEmpty(monster.Exps))
+            {
+                string[] GradesInfos = monster.Grades.Split('|');
+                string[] Stats = monster.Stats.Split('|');
+                string[] Spells = monster.Spells.Split('|');
+                string[] Pdvs = monster.Pdvs.Split('|');
+                string[] Points = monster.Points.Split('|');
+                string[] Inits = monster.Inits.Split('|');
+                string[] Exps = monster.Exps.Split('|');
+
+                for(int i = 0; i < GradesInfos.Length; i++)
+                {
+                    if (!GradesInfos[i].Equals("1@") && !string.IsNullOrEmpty(GradesInfos[i]))
+                    {
+                        string[] gradesInfosSplit = GradesInfos[i].Split('@')[1].Split(';');
+                        string[] statsSplit = Stats[i].Split(',');
+                        string[] statsInfosSplit = monster.StatsInfos.Split(";");
+                        List<Sorts> sorts = new();
+                        List<int> sortsLevels = new();
+                        foreach (string details in Spells[i].Split(';'))
+                        {
+                            if(!string.IsNullOrEmpty(details))
+                            {
+                                string[] args = details.Split("@");
+                                Sorts? sort = await SharedObjects.SortsRepository!.Get(Convert.ToInt32(args[0]));
+                                if(sort != null)
+                                {
+                                    sorts.Add(sort);
+                                    sortsLevels.Add(Convert.ToInt32(args[1]));
+                                }
+                            }
+                        }
+                        MobGrade mobGrade = new() {
+                            Grade = i + 1,
+                            Level = Convert.ToInt32(GradesInfos[i].Split('@')[0]),
+                            Pa = Convert.ToInt32(Points[i].Split(';')[0]),
+                            Pm = Convert.ToInt32(Points[i].Split(';')[1]),
+                            Initiative = Convert.ToInt32(Inits[i]),
+                            Vitalite = Convert.ToInt32(Pdvs[i]),
+                            Sagesse = Convert.ToInt32(statsSplit[1]),
+                            Force = Convert.ToInt32(statsSplit[0]),
+                            Intelligence = Convert.ToInt32(statsSplit[2]),
+                            Chance = Convert.ToInt32(statsSplit[3]),
+                            Agilite = Convert.ToInt32(statsSplit[4]),
+                            Dommages = Convert.ToInt32(statsInfosSplit[0]),
+                            DommagesPer = Convert.ToInt32(statsInfosSplit[1]),
+                            Soins = Convert.ToInt32(statsInfosSplit[2]),
+                            Creatures = Convert.ToInt32(statsInfosSplit[3]),
+                            ResNeutre = Convert.ToInt32(gradesInfosSplit[0]),
+                            ResTerre = Convert.ToInt32(gradesInfosSplit[1]),
+                            ResFeu = Convert.ToInt32(gradesInfosSplit[2]),
+                            ResEau = Convert.ToInt32(gradesInfosSplit[3]),
+                            ResAir = Convert.ToInt32(gradesInfosSplit[4]),
+                            EsqPa = Convert.ToInt32(gradesInfosSplit[5]),
+                            EsqPm = Convert.ToInt32(gradesInfosSplit[6]),
+                            Sorts = sorts,
+                            SortsLevels = sortsLevels,
+                            Experience = Convert.ToInt32(Exps[i])
+                        };
+                        Mobgrades.Add(mobGrade);
+                    }
+                }
+            }
+            return Mobgrades;
+        }
+
+        public static List<SpellsEffects> GetSpellLLevels(Sorts spell)
+        {
+            List<SpellsEffects> spellsEffects = new();
+            if(!string.IsNullOrEmpty(spell.Lvl1))
+            {
+                spellsEffects.Add(GetSpellEffectFromSpellLvl(spell.Lvl1, 1));
+            }
+            if (!string.IsNullOrEmpty(spell.Lvl2))
+            {
+                spellsEffects.Add(GetSpellEffectFromSpellLvl(spell.Lvl2, 2));
+            }
+            if (!string.IsNullOrEmpty(spell.Lvl3))
+            {
+                spellsEffects.Add(GetSpellEffectFromSpellLvl(spell.Lvl3, 3));
+            }
+            if (!string.IsNullOrEmpty(spell.Lvl4))
+            {
+                spellsEffects.Add(GetSpellEffectFromSpellLvl(spell.Lvl4, 4));
+            }
+            if (!string.IsNullOrEmpty(spell.Lvl5))
+            {
+                spellsEffects.Add(GetSpellEffectFromSpellLvl(spell.Lvl5, 5));
+            }
+            if (!string.IsNullOrEmpty(spell.Lvl6))
+            {
+                spellsEffects.Add(GetSpellEffectFromSpellLvl(spell.Lvl6, 6));
+            }
+            return spellsEffects;
+        }
+        public static SpellsEffects GetSpellEffectFromSpellLvl(string Lvl, int level)
+        {
+            string[] details = Lvl.Trim().Split(',');
+            SpellsEffects spellsEffects = new()
+            {
+                SpellEffectLevel = level,
+                Effect = details[0],
+                EffectCC = details[1],
+                PaCost = Convert.ToInt32(details[2]),
+                PoMin = Convert.ToInt32(details[3]),
+                PoMax = Convert.ToInt32(details[4]),
+                CC = Convert.ToInt32(details[5]),
+                EC = Convert.ToInt32(details[6]),
+                IsInlineLaunch = bool.Parse(details[7]),
+                IsWithoutLdv = bool.Parse(details[8]),
+                IsEmptycell = bool.Parse(details[9]),
+                IsPoEditable = bool.Parse(details[10]),
+                SpellType = Convert.ToInt32(details[11]),
+                LaunchPerTurn = Convert.ToInt32(details[12]),
+                LaunchPerTurnPerPlayer = Convert.ToInt32(details[13]),
+                TurnBetweenTwoLaunch = Convert.ToInt32(details[14]),
+                Zone = details[15],
+                RequireState = Convert.ToInt32(details[16]),
+                RequiredLevel = Convert.ToInt32(details[18]),
+                IsEcFinishTurn = bool.Parse(details[19]),
+            };
+            List<List<SelectedEffects>> SelectedEffectsList = ParseSpellEffects(spellsEffects.Effect, spellsEffects.EffectCC, spellsEffects.Zone, spellsEffects.EffectTarget!);
+            List<SelectedEffects> SelectedEffects = SelectedEffectsList[0];
+            List<SelectedEffects> SelectedEffectsCC = SelectedEffectsList[1];
+            spellsEffects.EffectSwf = ParseSelectedEffectToSwf(SelectedEffects);
+            spellsEffects.EffectCCSwf = ParseSelectedEffectToSwf(SelectedEffectsCC);
+            return spellsEffects;
+        }
+        public static List<List<SelectedEffects>> ParseSpellEffects(string Effects, string EffectsCC, string Zone, string EffectTarget)
+        {
+            List<List<SelectedEffects>> finalList = new();
+            List<Effects> effects = GenerateAllPossibleSpellEffect();
+            List<SelectedEffects> SelectedEffects = new();
+            string[] splitedEffects = Effects.Split('|');
+            int numbEffect = 0;
+            for (int i = 0; i < splitedEffects.Length; i++)
+            {
+                Effects effect = effects!.First(c => c.EffectId == Convert.ToInt32(splitedEffects[i].Split(';')[0]));
+                string effectTargetCorrect = string.IsNullOrEmpty(EffectTarget) == true ? "0" : EffectTarget;
+                string zone = "";
+                try
+                {
+                    zone = Zone.Substring((i * 2) + 1, 2);
+                }
+                catch
+                {
+                    continue;
+                }
+                SelectedEffects selectedEffect = new()
+                {
+                    Effect = effect,
+                    DamageMin = Convert.ToInt32(splitedEffects[i].Split(';')[1]),
+                    DamageMax = Convert.ToInt32(splitedEffects[i].Split(';')[2]),
+                    GlypheColor = Convert.ToInt32(splitedEffects[i].Split(';')[3]),
+                    SpellDuration = Convert.ToInt32(splitedEffects[i].Split(';')[4]),
+                    Probability = Convert.ToInt32(splitedEffects[i].Split(';')[5]),
+                    Zone = zone,
+                    DisplayName = effect.Name,
+                    IconPath = effect.ImagePath,
+                    EffectTarget = effectTargetCorrect == "0" ? 0 : Convert.ToInt32(EffectTarget.Split(':')[0].Split(';')[i])
+                };
+                if (selectedEffect.DamageMax == -1)
+                {
+                    selectedEffect.DisplayName = selectedEffect.DisplayName?.Replace("Min", selectedEffect.DamageMin.ToString()).Replace(" à Max", "").Replace("#3", selectedEffect.DamageMax.ToString());
+                }
+                else
+                {
+                    selectedEffect.DisplayName = selectedEffect.DisplayName?.Replace("Min", selectedEffect.DamageMin.ToString()).Replace("Max", selectedEffect.DamageMax.ToString()).Replace("#3", selectedEffect.DamageMax.ToString());
+                }
+                SelectedEffects?.Add(selectedEffect);
+                numbEffect++;
+            }
+            List<SelectedEffects> SelectedEffectsCC = new();
+            if (!string.IsNullOrEmpty(EffectsCC) && !EffectsCC.Equals("-1"))
+            {
+                string[] splitedEffectsCC = EffectsCC.Split('|');
+                for (int i = 0; i < splitedEffectsCC.Length; i++)
+                {
+                    int begin = ((numbEffect * 2) + (2 * i)) + 1;
+                    
+                    Effects effectCC = effects!.First(c => c.EffectId == Convert.ToInt32(splitedEffectsCC[i].Split(';')[0]));
+                    string effectTargetCorrect = string.IsNullOrEmpty(EffectTarget) == true ? "0" : EffectTarget;
+                    string zone = "";
+                    try
+                    {
+                        zone = Zone.Substring(begin, 2);
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+                    SelectedEffects selectedEffectCC = new()
+                    {
+                        Effect = effectCC,
+                        DamageMin = Convert.ToInt32(splitedEffectsCC[i].Split(';')[1]),
+                        DamageMax = Convert.ToInt32(splitedEffectsCC[i].Split(';')[2]),
+                        GlypheColor = Convert.ToInt32(splitedEffectsCC[i].Split(';')[3]),
+                        SpellDuration = Convert.ToInt32(splitedEffectsCC[i].Split(';')[4]),
+                        Probability = Convert.ToInt32(splitedEffectsCC[i].Split(';')[5]),
+                        Zone = zone,
+                        DisplayName = effectCC.Name,
+                        IconPath = effectCC.ImagePath,
+                        EffectTarget = effectTargetCorrect == "0" ? 0 : Convert.ToInt32(EffectTarget.Split(':')[0].Split(';')[i])
+                    };
+                    if (selectedEffectCC.DamageMax == -1)
+                    {
+                        selectedEffectCC.DisplayName = selectedEffectCC.DisplayName?.Replace("Min", selectedEffectCC.DamageMin.ToString()).Replace(" à Max", "").Replace("#3", selectedEffectCC.DamageMax.ToString());
+                    }
+                    else
+                    {
+                        selectedEffectCC.DisplayName = selectedEffectCC.DisplayName?.Replace("Min", selectedEffectCC.DamageMin.ToString()).Replace("Max", selectedEffectCC.DamageMax.ToString()).Replace("#3", selectedEffectCC.DamageMax.ToString());
+                    }
+                    SelectedEffectsCC?.Add(selectedEffectCC);
+                }
+            }
+            if (SelectedEffects != null && SelectedEffectsCC != null)
+            {
+                finalList.Add(SelectedEffects);
+                finalList.Add(SelectedEffectsCC);
+            }
+            return finalList;
+        }
+
+        public static string ParseSelectedEffectToSwf(List<SelectedEffects> selectedEffects)
+        {
+            string Effects = "";
+            if (selectedEffects.Count > 0)
+            {
+                for (int i = 0; i < selectedEffects.Count; i++)
+                {
+                    if (i != selectedEffects.Count - 1)
+                    {
+                        Effects += "[" + selectedEffects[i].Effect?.EffectId + "," + selectedEffects[i].DamageMin + "," + (selectedEffects[i].DamageMax <= 0 ? "null" : selectedEffects[i].DamageMax) + "," + (selectedEffects[i].GlypheColor <= 0 ? "null" : selectedEffects[i].GlypheColor) + "," + (selectedEffects[i].SpellDuration < 0 ? "null" : selectedEffects[i].SpellDuration) + "," + selectedEffects[i].Probability + ",\"" + CalcJetD(selectedEffects[i].DamageMin, selectedEffects[i].DamageMax) + "\"],";
+                    }
+                    else
+                    {
+                        Effects += "[" + selectedEffects[i].Effect?.EffectId + "," + selectedEffects[i].DamageMin + "," + (selectedEffects[i].DamageMax <= 0 ? "null" : selectedEffects[i].DamageMax) + "," + (selectedEffects[i].GlypheColor <= 0 ? "null" : selectedEffects[i].GlypheColor) + "," + (selectedEffects[i].SpellDuration < 0 ? "null" : selectedEffects[i].SpellDuration) + "," + selectedEffects[i].Probability + ",\"" + CalcJetD(selectedEffects[i].DamageMin, selectedEffects[i].DamageMax) + "\"]";
+                    }
+                }
+                Effects += "]";
+            }
+            return Effects;
         }
     }
 }

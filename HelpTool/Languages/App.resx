@@ -277,4 +277,97 @@
   <data name="CreateMonster" xml:space="preserve">
     <value>Create Monster</value>
   </data>
+  <data name="Effects" xml:space="preserve">
+    <value>Effects</value>
+  </data>
+  <data name="EffectsCC" xml:space="preserve">
+    <value>Critical Effects</value>
+  </data>
+  <data name="DamageMin" xml:space="preserve">
+    <value>Damages Min</value>
+  </data>
+  <data name="DamageMax" xml:space="preserve">
+    <value>Damages Max</value>
+  </data>
+  <data name="EffectTarget" xml:space="preserve">
+    <value>Target Effect</value>
+  </data>
+  <data name="GlyphColor" xml:space="preserve">
+    <value>Glyph Color</value>
+  </data>
+  <data name="DurationEffect" xml:space="preserve">
+    <value>Duration of Effect</value>
+  </data>
+  <data name="ChanceSuccess" xml:space="preserve">
+    <value>Chance of Success (in %)</value>
+  </data>
+  <data name="Area" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="AreaSize" xml:space="preserve">
+    <value>Size of the Area</value>
+  </data>
+  <data name="AddEffect" xml:space="preserve">
+    <value>Add the Effect</value>
+  </data>
+  <data name="RequiredLevel" xml:space="preserve">
+    <value>Required Level</value>
+  </data>
+  <data name="RequiredState" xml:space="preserve">
+    <value>Required State</value>
+  </data>
+  <data name="PaRequired" xml:space="preserve">
+    <value>AP to launch the Spell</value>
+  </data>
+  <data name="PoMin" xml:space="preserve">
+    <value>Scope Min</value>
+  </data>
+  <data name="PoMax" xml:space="preserve">
+    <value>Scope Max</value>
+  </data>
+  <data name="CriticalHit" xml:space="preserve">
+    <value>Critical Hit</value>
+  </data>
+  <data name="CriticalFail" xml:space="preserve">
+    <value>Critical Fail</value>
+  </data>
+  <data name="InlineLaunch" xml:space="preserve">
+    <value>Inline Launch</value>
+  </data>
+  <data name="LineSight" xml:space="preserve">
+    <value>Line of Sight</value>
+  </data>
+  <data name="EmptyCell" xml:space="preserve">
+    <value>Empty Cell</value>
+  </data>
+  <data name="EditableScope" xml:space="preserve">
+    <value>Editable Scope</value>
+  </data>
+  <data name="FailEndTurn" xml:space="preserve">
+    <value>Critical Fail EndTurn</value>
+  </data>
+  <data name="TypeSpell" xml:space="preserve">
+    <value>Type of Spell</value>
+  </data>
+  <data name="LaunchPerTurn" xml:space="preserve">
+    <value>Launch Per Turn</value>
+  </data>
+  <data name="LaunchPerTurnPerPlayer" xml:space="preserve">
+    <value>Launch / Turn / Player</value>
+  </data>
+  <data name="TimeBetweenTwoLaunch" xml:space="preserve">
+    <value>Time between two launch</value>
+  </data>
+  <data name="AddSpellLevel" xml:space="preserve">
+    <value>Add the Spell Level</value>
+  </data>
+  <data name="CreateSpell" xml:space="preserve">
+    <value>Create the Spell</value>
+  </data>
+  <data name="UpdateMonster" xml:space="preserve">
+    <value>Update Monster</value>
+  </data>
+  <data name="UpdateMobGrade" xml:space="preserve">
+    <value>Update MobGrade</value>
+  </data>
 </root>

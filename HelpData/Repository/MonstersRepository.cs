@@ -1,10 +1,8 @@
 ﻿using HelpData.Classes.Game;
 using HelpData.IRepository;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HelpData.Repository
@@ -30,6 +28,11 @@ namespace HelpData.Repository
         public async Task Create(Monsters monster)
         {
             await _context.Monsters.AddAsync(monster);
+            await _context.SaveChangesAsync();
+        }
+        public async Task Update(Monsters monster)
+        {
+            _context.Monsters.Update(monster);
             await _context.SaveChangesAsync();
         }
     }

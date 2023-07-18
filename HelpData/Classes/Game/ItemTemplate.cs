@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Windows.Documents;
 
 namespace HelpData.Classes.Game
 {
@@ -22,5 +24,7 @@ namespace HelpData.Classes.Game
         public int Points { get; set; }
         public int ExchangesObject { get; set; }
         public int NewPrice { get; set; }
+        public int GfxId { get; set; }
+        public List<Objects>? Nav_Objects { get; set; }
     }
 }

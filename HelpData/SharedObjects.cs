@@ -13,11 +13,16 @@ namespace HelpTool
     {
         public static IServiceProvider? ServiceProvider { get; set; }
         public static HelpDbContext? Context { get; set; }
+        public static LoginDbContext? LoginDbContext { get; set; }
+        public static IAccountsRepository? AccountRepository { get; set; }
         public static IItemsRepository? ItemsRepository { get; set; }
         public static IMonstersRepository? MonstersRepository { get; set; }
         public static ISortsRepository? SortsRepository { get; set; }
+        public static IObjectsRepository? ObjectsRepository { get; set; }
+        public static IPlayersRepository? PlayersRepository { get; set; }
         public static string? DbHost { get; set; }
         public static string? DbName { get; set; }
+        public static string? DbNameLogin { get; set; }
         public static string? DbUser { get; set; }
         public static string? DbPass { get; set; }
         public static CultureInfo? SelectedCulture { get; set; }

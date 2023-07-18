@@ -195,7 +195,7 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="60"/>
             </Grid.RowDefinitions>
-            <Button Grid.Row="0" Content="{translator:Loc AddMobGrade}" HorizontalAlignment="Stretch" Background="LightGreen" Click="AddMobGrade"/>
+            <Button Grid.Row="0" x:Name="AddMobGradeButton" Content="{translator:Loc AddMobGrade}" HorizontalAlignment="Stretch" Background="LightGreen" Click="AddMobGrade"/>
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -232,7 +232,7 @@
                 <CheckBox Content="{translator:Loc IsSummonable}" x:Name="IsInvocable" Grid.Row="4" Grid.Column="2" IsChecked="False"/>
 
             </Grid>
-            <Button Grid.Row="2" Content="{translator:Loc CreateMonster}" HorizontalAlignment="Stretch" Background="LightSalmon" Click="CreateMonster"/>
+            <Button x:Name="CreateButton" Grid.Row="2" Content="{translator:Loc CreateMonster}" HorizontalAlignment="Stretch" Background="LightSalmon" Click="CreateMonster"/>
             <TextBox x:Name="SwfResultTextBox" Grid.Row="3" IsReadOnly="False"/>
         </Grid>
     </Grid>

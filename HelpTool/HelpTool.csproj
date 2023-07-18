@@ -9,9 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Resources\Items\**" />
+    <EmbeddedResource Remove="Resources\Items\**" />
+    <None Remove="Resources\Items\**" />
+    <Page Remove="Resources\Items\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Resources\delete.png" />
     <None Remove="Resources\donjons.jpg" />
     <None Remove="Resources\down.png" />
+    <None Remove="Resources\edit.png" />
     <None Remove="Resources\Icons\agi.png" />
     <None Remove="Resources\Icons\case.png" />
     <None Remove="Resources\Icons\cercle.png" />
@@ -48,6 +56,20 @@
     <None Remove="Resources\Icons\sort.png" />
     <None Remove="Resources\Icons\vita.png" />
     <None Remove="Resources\Icons\XP.png" />
+    <None Remove="Resources\Inventory\amulette.png" />
+    <None Remove="Resources\Inventory\anneauD.png" />
+    <None Remove="Resources\Inventory\anneauG.png" />
+    <None Remove="Resources\Inventory\arme.png" />
+    <None Remove="Resources\Inventory\bottes.png" />
+    <None Remove="Resources\Inventory\bouclier.png" />
+    <None Remove="Resources\Inventory\cape.png" />
+    <None Remove="Resources\Inventory\ceinture.png" />
+    <None Remove="Resources\Inventory\coiffe.png" />
+    <None Remove="Resources\Inventory\corps.png" />
+    <None Remove="Resources\Inventory\dofus.png" />
+    <None Remove="Resources\Inventory\dragodinde.png" />
+    <None Remove="Resources\Inventory\famillier.png" />
+    <None Remove="Resources\iop.png" />
     <None Remove="Resources\item.png" />
     <None Remove="Resources\monster.png" />
     <None Remove="Resources\ocre.ico" />
@@ -81,6 +103,7 @@
   <ItemGroup>
     <Resource Include="Resources\donjons.jpg" />
     <Resource Include="Resources\down.png" />
+    <Resource Include="Resources\edit.png" />
     <Resource Include="Resources\Icons\agi.png" />
     <Resource Include="Resources\Icons\case.png" />
     <Resource Include="Resources\Icons\cercle.png" />
@@ -117,6 +140,20 @@
     <Resource Include="Resources\Icons\sort.png" />
     <Resource Include="Resources\Icons\vita.png" />
     <Resource Include="Resources\Icons\XP.png" />
+    <Resource Include="Resources\Inventory\amulette.png" />
+    <Resource Include="Resources\Inventory\anneauG.png" />
+    <Resource Include="Resources\Inventory\anneauD.png" />
+    <Resource Include="Resources\Inventory\arme.png" />
+    <Resource Include="Resources\Inventory\bottes.png" />
+    <Resource Include="Resources\Inventory\bouclier.png" />
+    <Resource Include="Resources\Inventory\cape.png" />
+    <Resource Include="Resources\Inventory\ceinture.png" />
+    <Resource Include="Resources\Inventory\coiffe.png" />
+    <Resource Include="Resources\Inventory\corps.png" />
+    <Resource Include="Resources\Inventory\dofus.png" />
+    <Resource Include="Resources\Inventory\dragodinde.png" />
+    <Resource Include="Resources\Inventory\famillier.png" />
+    <Resource Include="Resources\iop.png" />
     <Resource Include="Resources\monster.png" />
     <Resource Include="Resources\item.png" />
     <Resource Include="Resources\ocre.ico" />
